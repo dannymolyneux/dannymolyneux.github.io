@@ -3,3 +3,11 @@ title: "About"
 ---
 
 About this site
+
+This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.
+
+The toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation.
+
+---
+
+## What is Count Regression?

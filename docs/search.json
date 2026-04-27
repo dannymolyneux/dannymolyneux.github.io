@@ -1,16 +1,44 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "vignette.html",
+    "href": "vignette.html",
+    "title": "Vignette: Using the Count Regression Toolkit",
     "section": "",
-    "text": "About this site"
+    "text": "This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models."
+  },
+  {
+    "objectID": "vignette.html#goal",
+    "href": "vignette.html#goal",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "",
+    "text": "This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models."
+  },
+  {
+    "objectID": "vignette.html#example-dataset",
+    "href": "vignette.html#example-dataset",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Example Dataset",
+    "text": "Example Dataset"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "websitefiles",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nThis project includes an interactive Shiny dashboard for count regression.\nTo run the app locally:\nshiny::runApp()"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\nThis project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
+  },
+  {
+    "objectID": "about.html#what-is-count-regression",
+    "href": "about.html#what-is-count-regression",
+    "title": "About",
+    "section": "What is Count Regression?",
+    "text": "What is Count Regression?"
   }
 ]

@@ -1,0 +1,9 @@
+---
+title: "Vignette: Using the Count Regression Toolkit"
+---
+
+## Goal
+
+This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models.
+
+## Example Dataset

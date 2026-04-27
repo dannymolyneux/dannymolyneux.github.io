@@ -5,3 +5,12 @@ title: "websitefiles"
 This is a Quarto website.
 
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+
+This project includes an interactive Shiny dashboard for count regression.
+
+To run the app locally:
+
+```r
+shiny::runApp()
+```

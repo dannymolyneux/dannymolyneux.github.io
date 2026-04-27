@@ -3,12 +3,15 @@ project:
   output-dir: docs
 
 website:
-  title: "websitefiles"
+  title: "Count Regression Toolkit"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - href: vignette.qmd
+        text: Vignette
 
 format:
   html:
