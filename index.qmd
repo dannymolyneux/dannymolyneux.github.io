@@ -9,8 +9,17 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 This project includes an interactive Shiny dashboard for count regression.
 
-To run the app locally:
+To run the app:
+
+1. Clone the repository from GitHub:
+   https://github.com/dannymolyneux/dannymolyneux.github.io
+
+2. Open R or RStudio
+
+3. Run:
 
 ```r
 shiny::runApp()
 ```
+
+Or open the "app.r" file, and click "Run".

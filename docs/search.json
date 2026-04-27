@@ -25,7 +25,7 @@
     "href": "index.html",
     "title": "websitefiles",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nThis project includes an interactive Shiny dashboard for count regression.\nTo run the app locally:\nshiny::runApp()"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nThis project includes an interactive Shiny dashboard for count regression.\nTo run the app:\n\nClone the repository from GitHub: https://github.com/dannymolyneux/dannymolyneux.github.io\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click “Run”."
   },
   {
     "objectID": "about.html",
