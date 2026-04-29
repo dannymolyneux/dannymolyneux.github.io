@@ -14,3 +14,15 @@ fit_count_model <- function(formula, data, model_type) {
     VGAM::vglm(formula, data = data, family = VGAM::genpoisson())
   }
 }
+
+#zero inflation ouptut for server.r
+output$zero_results <- renderUI({
+  req(values$model)
+
+  result <- check_zero_inflation_dharma(values$model)
+
+  HTML(paste0(
+    "<p><b>p-value:</b> ", round(result$p.value, 4), "</p>",
+    "<p>", result$interpretation, "</p>"
+  ))
+})

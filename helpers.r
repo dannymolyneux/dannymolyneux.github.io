@@ -1,5 +1,6 @@
 library(dplyr)
 library(tibble)
+library(tidyr)
 
 #function checking if response is a count variable
 is_count_response <- function(x) {
@@ -9,6 +10,7 @@ is_count_response <- function(x) {
     all(x %% 1 == 0, na.rm = TRUE)
 }
 
+#splits response from predictors
 get_response_name <- function(formula_text) {
   trimws(strsplit(formula_text, "~")[[1]][1])
 }
