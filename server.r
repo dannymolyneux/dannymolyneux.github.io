@@ -15,6 +15,10 @@ library(shiny)
 library(DT)
 library(ggplot2)
 library(tibble)
+library(MASS)
+library(pscl)
+library(performance)
+library(car)
 
 source("helpers.R")
 source("models.R")
@@ -30,6 +34,7 @@ server <- (function(input, output, session){
     datset = NULL,
     model_data = NULL,
     model = NULL,
+    model_type = NULL,
     response = NULL,
     removed.n = 0
   )
@@ -647,6 +652,14 @@ server <- (function(input, output, session){
   # When a new sample selected
   #############################################################################################
   observeEvent(input$sample_data_choice,{
+    if (input$sample_data_choice == "Select a dataset") {
+      vals$dataset <- NULL
+      vals$model <- NULL
+      vals$model_data <- NULL
+      vals$response <- NULL
+      vals$removed.n <- 0
+      return(NULL)
+    }
     req(input$sample_data_choice)
     req(input$sample_data_choice != "Select a dataset")
     dat <- load_sample_data(input$sample_data_choice)
@@ -668,6 +681,7 @@ server <- (function(input, output, session){
 
     shinyjs::show("select_factors")
 
+    
     # if(globalVars$sample){
     #   if(input$sample_data_choice=="Palmer Penguins"){
     #     library(palmerpenguins)
@@ -1075,7 +1089,7 @@ server <- (function(input, output, session){
   })
 
   output$irr_table <- DT::renderDataTable({
-    req(vals$model)
+    req(vals$model, vals$model_type)
 
     DT::datatable(
       tidy_poisson_model(vals$model, input$alpha),
@@ -1088,8 +1102,13 @@ server <- (function(input, output, session){
     make_poisson_conditions_plot(vals$model)
   })
 
-  output$gof_table <- DT::renderDataTable({
+  output$pearson_squared_plot <- renderPlot({
     req(vals$model)
+    make_poisson_pearson_squared_plot(vals$model)
+  })
+
+  output$gof_table <- DT::renderDataTable({
+    req(vals$model, vals$model_type)
 
     DT::datatable(
       poisson_gof_table(vals$model),

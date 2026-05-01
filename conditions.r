@@ -67,3 +67,21 @@ make_poisson_conditions_plot <- function(model) {
                ggtitle(paste("Dispersion Ratio =", round(pearson.ratio, 4)))
   p1+p2
 }
+
+make_poisson_pearson_squared_plot <- function(model) {
+  lambdas <- fitted(model, type="response")
+
+  ggdat <- tibble(r = resid(model, type="pearson")^2,
+                lambda=lambdas)
+
+  pearson.ratio <- sum(residuals(model, type = "pearson")^2) / df.residual(model)
+
+  plot = ggplot(ggdat) + 
+    geom_point(aes(x=lambda, y=r)) + 
+    geom_smooth(aes(x=lambda, y=r)) +
+    theme_bw()+
+    labs(x=bquote(lambda),
+        y="Squared Pearson Residual")+
+    ggtitle(paste("Dispersion Ratio: ", round(pearson.ratio,4))) 
+  plot
+}
