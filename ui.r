@@ -102,7 +102,7 @@ ui <- tagList(
           tags$hr(),
 
           tags$a(
-            href = "../index.html",
+            href = "https://dannymolyneux.github.io/",
             target = "_blank",
             class = "btn btn-primary",
             "Back to Website"

@@ -1,13 +1,14 @@
 ---
-title: "websitefiles"
+title: "Count Regression Toolkit"
 ---
 
-This is a Quarto website.
+## Welcome
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+This website documents my Data Analysis II software toolkit for count regression.
 
+## Launching the App
 
-This project includes an interactive Shiny dashboard for count regression.
+The Shiny app is included in this GitHub repository (https://dannymolyneux.github.io/).
 
 To run the app:
 
@@ -23,3 +24,7 @@ shiny::runApp()
 ```
 
 Or open the "app.r" file, and click "Run".
+
+## Pages
+
+Use the navigation bar to read about the project and view the vignette.

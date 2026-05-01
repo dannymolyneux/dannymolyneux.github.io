@@ -2,8 +2,25 @@
 title: "Vignette: Using the Count Regression Toolkit"
 ---
 
-## Goal
+## Example Workflow
 
-This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models.
+This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models.
+
+## Step 1: Load Data
+
+Open the Shiny App and upload a CSV file with a count response variable.
+
+## Step 2: Enter a Model Formula
+
+Use a formula such as:
+
+```r
+count_response ~ predictor1 + predictor2
+```
+
+## Step 3: Fit a Regression
+
+Click **Fit Model**.
+
 
 ## Example Dataset
