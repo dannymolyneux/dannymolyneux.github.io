@@ -67,7 +67,7 @@
     "href": "index.html#launching-the-app",
     "title": "Count Regression Toolkit",
     "section": "Launching the App",
-    "text": "Launching the App\nThe Shiny app is included in this GitHub repository (https://dannymolyneux.github.io/).\nTo run the app:\n\nClone the repository from GitHub: https://github.com/dannymolyneux/dannymolyneux.github.io\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click “Run”."
+    "text": "Launching the App\nThe Shiny app is included in this GitHub repository: https://github.com/dannymolyneux/dannymolyneux.github.io\nTo run the app:\n\nClone the repository from GitHub:\nhttps://github.com/dannymolyneux/dannymolyneux.github.io.git\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click Run App."
   },
   {
     "objectID": "index.html#pages",

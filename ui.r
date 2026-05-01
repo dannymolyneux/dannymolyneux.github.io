@@ -74,6 +74,22 @@ ui <- tagList(
             accept = c(".csv")
           ),
 
+          actionButton("sample", "Use Sample Data"),
+          hidden(
+            div(id = "choose_sample",
+                selectInput("sample_data_choice","Sample Data:",
+                            choices = c("Select a sample dataset",
+                                        "Brockmann 1996",
+                                        "Kitsberg 2025",
+                                        "Ache Monkey (McMillan)",
+                                        "Ache Monkey Trips",
+                                        "Niyogi 2025"),
+                            selected = "Select a sample dataset"
+                )
+              )
+          ),
+
+
           selectizeInput(
             "select_factors",
             "Specify Categorical variables:",

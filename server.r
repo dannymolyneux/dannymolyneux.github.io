@@ -56,7 +56,7 @@ server <- (function(input, output, session){
   output$preview.data <- DT::renderDataTable({
     req(vals$dataset)
     DT::datatable(vals$dataset, options = list(scrollX = TRUE))
-  })
+  }, server = FALSE)
   
   #############################################################################################
   # When data is uploaded
@@ -537,107 +537,164 @@ server <- (function(input, output, session){
   #   shinyjs::show("interaction_analysis")
   #   shinyjs::show("var_inter")
   # }
+ 
+  load_sample_data <- function(choice) {
+    if (choice == "Brockmann 1996") {
+      dat = read.csv("www/brockmann96.csv") %>%
+        mutate(
+          color = factor(color),
+          spine = factor(spine)
+        )
+
+    } else if (choice == "Kitsberg 2025") {
+        dat = read.csv("www/kitsberg25_nucleus.csv") %>%
+          rename(viruses = `viruses within nucleus`)
+
+    } else if (choice == "Ache Monkey (McMillan)") {
+        dat = read.csv("www/ache_monkey.csv")
+
+    } else if (choice == "Ache Monkey Trips") {
+        dat = read.csv("www/ache_monkey_trips.csv") %>%
+          mutate(Age = scale(Age))
+
+    } else if (choice == "Niyogi 2025") {
+        dat = read.csv("www/niyogi25.csv")
+
+    } else {
+        dat = NULL
+    }
+    dat
+  }
+
   
   #############################################################################################
   # When sample data is loaded
   #############################################################################################
-  # observeEvent(input$sample, {
-  #   globalVars$changed.input <- TRUE
-  #   updateTabsetPanel(session, "workPanel", selected = "data")
-  #   globalVars$model <- NULL
-  #   hideAllTabs()
-  #   hideInteractionInput()
-  #   uncheckAllAssumptions()
-  #   emptyEquation()
+  observeEvent(input$sample, {
+    # globalVars$changed.input <- TRUE
+    # updateTabsetPanel(session, "workPanel", selected = "data")
+    # globalVars$model <- NULL
+    # hideAllTabs()
+    # hideInteractionInput()
+    # uncheckAllAssumptions()
+    # emptyEquation()
+    if (is.null(vals$sample)) {
+      vals$sample <- FALSE
+    } 
 
-  #   if(!globalVars$sample){
-  #     globalVars$sample <- TRUE
-  #     globalVars$dataset <- NULL
-  #     shinyjs::hide("file_upload")
-  #     shinyjs::show("choose_sample")
-  #     shinyjs::show("select_factors")
+    vals$sample <- !vals$sample
+
+
+    if(vals$sample){
+      #globalVars$sample <- TRUE
+      #globalVars$dataset <- NULL
+      shinyjs::hide("file_upload")
+      shinyjs::show("choose_sample")
+      #shinyjs::show("select_factors")
       
-  #     if(input$sample_data_choice=="Palmer Penguins"){
-  #       library(palmerpenguins)
-  #       dat<-data.frame(penguins)
-  #     }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
-  #       dat<-read.csv("www/mfap4.csv")%>%
-  #         mutate(Age=as.numeric(Age))
-  #     }else if(input$sample_data_choice=="U.S. News College Data"){
-  #       library(ISLR)
-  #       dat<-College
-  #     }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
-  #       dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
-  #     }
-  #     globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
-  #       mutate_if(is.integer,as.numeric)
-  #     globalVars$dataset.original <- dat %>% mutate_if(is.character,as.factor)%>%
-  #       mutate_if(is.integer,as.numeric)
+      # if(input$sample_data_choice=="Palmer Penguins"){
+      #   library(palmerpenguins)
+      #   dat<-data.frame(penguins)
+      # }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
+      #   dat<-read.csv("www/mfap4.csv")%>%
+      #     mutate(Age=as.numeric(Age))
+      # }else if(input$sample_data_choice=="U.S. News College Data"){
+      #   library(ISLR)
+      #   dat<-College
+      # }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
+      #   dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
+      # }
+      # globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
+      #   mutate_if(is.integer,as.numeric)
+      # globalVars$dataset.original <- dat %>% mutate_if(is.character,as.factor)%>%
+      #   mutate_if(is.integer,as.numeric)
       
-  #     updateActionButton(session, "sample", label = "<- Back")
-  #     updateFactorsSelectize()
+      updateActionButton(session, "sample", label = "<- Back")
+      # updateFactorsSelectize()
       
-  #   } else {
-  #     globalVars$sample <- FALSE
-  #     globalVars$dataset <- NULL
-  #     shinyjs::show("file_upload")
-  #     shinyjs::hide("choose_sample")
+    } else {
+      #globalVars$sample <- FALSE
+      vals$dataset <- NULL
+      vals$model <- NULL
+      vals$model_data <- NULL
+      shinyjs::show("file_upload")
+      shinyjs::hide("choose_sample")
       
-  #     if(!is.null(input$file_upload)){
-  #       inFile <<- upload_data()
-  #       shinyjs::show("select_factors")
-  #       updateFactorsSelectize()
+      # if(!is.null(input$file_upload)){
+      #   inFile <<- upload_data()
+      #   shinyjs::show("select_factors")
+      #   updateFactorsSelectize()
         
-  #     }else{
-  #       shinyjs::hide("select_factors")
-  #       globalVars$dataset <- NULL
-  #       globalVars$dataset.original <- NULL
-  #       globalVars$fcts <- NULL
-  #       updateSelectizeInput(session, "select_factors",
-  #                            "Specify Categorical Variables in the Data:",
-  #                            choices = c(""),
-  #                            selected = NULL)
-  #     }
-  #     updateActionButton(session, "sample", label = "Sample Data")
-  #   }
-  # })
+      # }else{
+      #   shinyjs::hide("select_factors")
+      #   globalVars$dataset <- NULL
+      #   globalVars$dataset.original <- NULL
+      #   globalVars$fcts <- NULL
+      #   updateSelectizeInput(session, "select_factors",
+      #                        "Specify Categorical Variables in the Data:",
+      #                        choices = c(""),
+      #                        selected = NULL)
+      # }
+      updateActionButton(session, "sample", label = "Sample Data")
+    }
+  })
   
   #############################################################################################
   # When a new sample selected
   #############################################################################################
-  # observeEvent(input$sample_data_choice,{
-  #   globalVars$changed.input <- TRUE
-  #   if(globalVars$sample){
-  #     if(input$sample_data_choice=="Palmer Penguins"){
-  #       library(palmerpenguins)
-  #       dat<-data.frame(penguins)
-  #     }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
-  #       dat<-read.csv("www/mfap4.csv")%>%
-  #         mutate(Age=as.numeric(Age))
-  #     }else if(input$sample_data_choice=="U.S. News College Data"){
-  #       library(ISLR)
-  #       dat<-College
-  #     }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
-  #       dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
-  #     } else if(input$sample_data_choice=="Lai et al. Tree Data"){
-  #       dat<-read.csv("www/LaiTreeData.csv") %>% mutate(sp = factor(sp))
-  #     } else if(input$sample_data_choice=="Lai et al. Schima Superba"){
-  #       dat<-read.csv("www/LaiTreeData-SS.csv") %>% mutate(sp = factor(sp))
-  #     } else if(input$sample_data_choice=="Loven et al. Road Weather Data"){
-  #       dat<-read.csv("www/HalikkoAsphalt.csv") %>% mutate(RoadState = factor(RoadState))
-  #     }
-  #     shinyjs::show("select_factors")
-  #     globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
-  #       mutate_if(is.integer,as.numeric)
-  #     globalVars$dataset.original <- globalVars$dataset
+  observeEvent(input$sample_data_choice,{
+    req(input$sample_data_choice)
+    req(input$sample_data_choice != "Select a dataset")
+    dat <- load_sample_data(input$sample_data_choice)
+    req(dat)
+
+    dat <- dat %>%
+      mutate(across(where(is.character), as.factor))
+
+    vals$dataset <- dat
+    vals$model <- NULL
+    vals$model_data <- NULL
+ 
+    updateSelectizeInput(
+      session,
+      "select_factors",
+      choices = names(dat),
+      selected = names(dat)[sapply(dat, is.factor)]
+    )
+
+    shinyjs::show("select_factors")
+
+    # if(globalVars$sample){
+    #   if(input$sample_data_choice=="Palmer Penguins"){
+    #     library(palmerpenguins)
+    #     dat<-data.frame(penguins)
+    #   }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
+    #     dat<-read.csv("www/mfap4.csv")%>%
+    #       mutate(Age=as.numeric(Age))
+    #   }else if(input$sample_data_choice=="U.S. News College Data"){
+    #     library(ISLR)
+    #     dat<-College
+    #   }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
+    #     dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
+    #   } else if(input$sample_data_choice=="Lai et al. Tree Data"){
+    #     dat<-read.csv("www/LaiTreeData.csv") %>% mutate(sp = factor(sp))
+    #   } else if(input$sample_data_choice=="Lai et al. Schima Superba"){
+    #     dat<-read.csv("www/LaiTreeData-SS.csv") %>% mutate(sp = factor(sp))
+    #   } else if(input$sample_data_choice=="Loven et al. Road Weather Data"){
+    #     dat<-read.csv("www/HalikkoAsphalt.csv") %>% mutate(RoadState = factor(RoadState))
+    #   }
+    #   shinyjs::show("select_factors")
+    #   globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
+    #     mutate_if(is.integer,as.numeric)
+    #   globalVars$dataset.original <- globalVars$dataset
       
-  #     updateFactorsSelectize()
-  #     hideInteractionInput()
-  #     emptyEquation()
-  #     uncheckAllAssumptions()
-  #     hideAllTabs()
-  #   }
-  # })
+    #   updateFactorsSelectize()
+    #   hideInteractionInput()
+    #   emptyEquation()
+    #   uncheckAllAssumptions()
+    #   hideAllTabs()
+    # }
+  })
   
   ########################################
   # Check Equation Input
