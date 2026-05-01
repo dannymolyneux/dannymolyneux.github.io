@@ -142,8 +142,8 @@ ui <- tagList(
             ),
 
             tabPanel(
-              "Diagnostics",
-              plotOutput("diagnostic_plots"),
+              "Conditions",
+              plotOutput("condition_plots"),
               DT::dataTableOutput("gof_table")
             )
           )

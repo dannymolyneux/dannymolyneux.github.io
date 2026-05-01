@@ -35,11 +35,18 @@
     "text": "Step 3: Fit a Regression\nClick Fit Model."
   },
   {
-    "objectID": "vignette.html#example-dataset",
-    "href": "vignette.html#example-dataset",
+    "objectID": "vignette.html#step-4-check-output",
+    "href": "vignette.html#step-4-check-output",
     "title": "Vignette: Using the Count Regression Toolkit",
-    "section": "Example Dataset",
-    "text": "Example Dataset"
+    "section": "Step 4: Check Output",
+    "text": "Step 4: Check Output"
+  },
+  {
+    "objectID": "vignette.html#step-5-interpret-results",
+    "href": "vignette.html#step-5-interpret-results",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Step 5: Interpret Results",
+    "text": "Step 5: Interpret Results"
   },
   {
     "objectID": "index.html",

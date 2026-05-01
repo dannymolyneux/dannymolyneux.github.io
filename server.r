@@ -1022,9 +1022,9 @@ server <- (function(input, output, session){
     )
   })
 
-  output$diagnostic_plots <- renderPlot({
+  output$condition_plots <- renderPlot({
     req(vals$model)
-    make_poisson_diagnostic_plot(vals$model)
+    make_poisson_conditions_plot(vals$model)
   })
 
   output$gof_table <- DT::renderDataTable({
