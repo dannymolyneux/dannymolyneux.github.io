@@ -8,12 +8,13 @@ This website documents my Data Analysis II software toolkit for count regression
 
 ## Launching the App
 
-The Shiny app is included in this GitHub repository (https://dannymolyneux.github.io/).
+The Shiny app is included in this GitHub repository: https://github.com/dannymolyneux/dannymolyneux.github.io
 
 To run the app:
 
 1. Clone the repository from GitHub:
-   https://github.com/dannymolyneux/dannymolyneux.github.io
+
+   https://github.com/dannymolyneux/dannymolyneux.github.io.git 
 
 2. Open R or RStudio
 
@@ -23,7 +24,7 @@ To run the app:
 shiny::runApp()
 ```
 
-Or open the "app.r" file, and click "Run".
+Or open the "app.r" file, and click **Run App**.
 
 ## Pages
 
