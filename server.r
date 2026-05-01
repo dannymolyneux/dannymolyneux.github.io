@@ -16,6 +16,10 @@ library(DT)
 library(ggplot2)
 library(tibble)
 
+source("helpers.R")
+source("models.R")
+source("conditions.R")
+
 server <- (function(input, output, session){
   #############################################################################################
   # DATA OBJECTS
@@ -53,7 +57,7 @@ server <- (function(input, output, session){
   ##############################################
   # DATASET PREVIEW
   ##############################################
-  output$preview.data <- DT::renderDataTable({
+  output$preview_data <- DT::renderDataTable({
     req(vals$dataset)
     DT::datatable(vals$dataset, options = list(scrollX = TRUE))
   }, server = FALSE)
