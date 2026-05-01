@@ -4,14 +4,35 @@
     "href": "vignette.html",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "",
-    "text": "This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models."
+    "text": "This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models."
   },
   {
-    "objectID": "vignette.html#goal",
-    "href": "vignette.html#goal",
+    "objectID": "vignette.html#example-workflow",
+    "href": "vignette.html#example-workflow",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "",
-    "text": "This vignette demonstrates how to use the Shiny app to fit and evaluate count regression models."
+    "text": "This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models."
+  },
+  {
+    "objectID": "vignette.html#step-1-load-data",
+    "href": "vignette.html#step-1-load-data",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Step 1: Load Data",
+    "text": "Step 1: Load Data\nOpen the Shiny App and upload a CSV file with a count response variable."
+  },
+  {
+    "objectID": "vignette.html#step-2-enter-a-model-formula",
+    "href": "vignette.html#step-2-enter-a-model-formula",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Step 2: Enter a Model Formula",
+    "text": "Step 2: Enter a Model Formula\nUse a formula such as:\ncount_response ~ predictor1 + predictor2"
+  },
+  {
+    "objectID": "vignette.html#step-3-fit-a-regression",
+    "href": "vignette.html#step-3-fit-a-regression",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Step 3: Fit a Regression",
+    "text": "Step 3: Fit a Regression\nClick Fit Model."
   },
   {
     "objectID": "vignette.html#example-dataset",
@@ -23,16 +44,44 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "websitefiles",
+    "title": "Count Regression Toolkit",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nThis project includes an interactive Shiny dashboard for count regression.\nTo run the app:\n\nClone the repository from GitHub: https://github.com/dannymolyneux/dannymolyneux.github.io\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click “Run”."
+    "text": "This website documents my Data Analysis II software toolkit for count regression."
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "Count Regression Toolkit",
+    "section": "",
+    "text": "This website documents my Data Analysis II software toolkit for count regression."
+  },
+  {
+    "objectID": "index.html#launching-the-app",
+    "href": "index.html#launching-the-app",
+    "title": "Count Regression Toolkit",
+    "section": "Launching the App",
+    "text": "Launching the App\nThe Shiny app is included in this GitHub repository (https://dannymolyneux.github.io/).\nTo run the app:\n\nClone the repository from GitHub: https://github.com/dannymolyneux/dannymolyneux.github.io\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click “Run”."
+  },
+  {
+    "objectID": "index.html#pages",
+    "href": "index.html#pages",
+    "title": "Count Regression Toolkit",
+    "section": "Pages",
+    "text": "Pages\nUse the navigation bar to read about the project and view the vignette."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\nThis project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
+  },
+  {
+    "objectID": "about.html#project-overview",
+    "href": "about.html#project-overview",
+    "title": "About",
+    "section": "",
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
   },
   {
     "objectID": "about.html#what-is-count-regression",

@@ -22,5 +22,7 @@ count_response ~ predictor1 + predictor2
 
 Click **Fit Model**.
 
+## Step 4: Check Output
 
-## Example Dataset
+
+## Step 5: Interpret Results

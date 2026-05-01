@@ -40,7 +40,7 @@ library(xtable) #LaTex Plots
 ##########################################
 # Regression
 ##########################################
-library(GGally)      #pairwise plots
+#library(GGally)      #pairwise plots
 library(gtools)      #pvales for cormat
 #library(Hmisc)      #correlations and tests (still here, not loaded due to overriding summarize)
 library(lmtest)      #constant error variance
