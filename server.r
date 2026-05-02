@@ -419,7 +419,7 @@ server <- (function(input, output, session){
   output$dispersion_results <- renderUI({
     req(vals$model, vals$model_type)
 
-    result <- dispersion_ratio(vals$model)
+    ratio <- dispersion_ratio(vals$model)
 
     message = if(vals$model_type == "Poisson") {
       if (ratio < 1.5) {
