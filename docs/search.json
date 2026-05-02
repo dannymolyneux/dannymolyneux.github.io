@@ -7,8 +7,8 @@
     "text": "This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models."
   },
   {
-    "objectID": "vignette.html#example-workflow",
-    "href": "vignette.html#example-workflow",
+    "objectID": "vignette.html#example-model",
+    "href": "vignette.html#example-model",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "",
     "text": "This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models."
@@ -18,35 +18,42 @@
     "href": "vignette.html#step-1-load-data",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 1: Load Data",
-    "text": "Step 1: Load Data\nOpen the Shiny App and upload a CSV file with a count response variable."
+    "text": "Step 1: Load Data\nUse the sample dataset:\nAche Monkey (McMillan)\nResponse variable: - Kills (number of successful hunts)\nPredictor: - Age"
   },
   {
-    "objectID": "vignette.html#step-2-enter-a-model-formula",
-    "href": "vignette.html#step-2-enter-a-model-formula",
+    "objectID": "vignette.html#step-2-look-at-summary-of-data",
+    "href": "vignette.html#step-2-look-at-summary-of-data",
     "title": "Vignette: Using the Count Regression Toolkit",
-    "section": "Step 2: Enter a Model Formula",
-    "text": "Step 2: Enter a Model Formula\nUse a formula such as:\ncount_response ~ predictor1 + predictor2"
+    "section": "Step 2: Look at summary of data",
+    "text": "Step 2: Look at summary of data\nAfter pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787\n- Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
   },
   {
-    "objectID": "vignette.html#step-3-fit-a-regression",
-    "href": "vignette.html#step-3-fit-a-regression",
+    "objectID": "vignette.html#step-3-check-conditions-and-diagnostics",
+    "href": "vignette.html#step-3-check-conditions-and-diagnostics",
     "title": "Vignette: Using the Count Regression Toolkit",
-    "section": "Step 3: Fit a Regression",
-    "text": "Step 3: Fit a Regression\nClick Fit Model."
+    "section": "Step 3: Check conditions and diagnostics",
+    "text": "Step 3: Check conditions and diagnostics\nThe “Model Conditions” and “Diagnostics” tabs show a dispersion ratio of 11.679, confirming the overdispersion, and indicating we should try an alternative model."
   },
   {
-    "objectID": "vignette.html#step-4-check-output",
-    "href": "vignette.html#step-4-check-output",
+    "objectID": "vignette.html#step-4-try-alternative",
+    "href": "vignette.html#step-4-try-alternative",
     "title": "Vignette: Using the Count Regression Toolkit",
-    "section": "Step 4: Check Output",
-    "text": "Step 4: Check Output"
+    "section": "Step 4: Try alternative",
+    "text": "Step 4: Try alternative\nTry Negative Binomial so that we can use AIC and log-likelihood, while hopefully fixing the overdispersion issue. So fit the model again but as a Negative Binomial Regression."
   },
   {
-    "objectID": "vignette.html#step-5-interpret-results",
-    "href": "vignette.html#step-5-interpret-results",
+    "objectID": "vignette.html#step-5-new-diagnostics",
+    "href": "vignette.html#step-5-new-diagnostics",
     "title": "Vignette: Using the Count Regression Toolkit",
-    "section": "Step 5: Interpret Results",
-    "text": "Step 5: Interpret Results"
+    "section": "Step 5: New diagnostics",
+    "text": "Step 5: New diagnostics\n“Diagnostics” tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the “Model Comparison” tab, by comparing the AIC’s."
+  },
+  {
+    "objectID": "vignette.html#step-6-interpretation",
+    "href": "vignette.html#step-6-interpretation",
+    "title": "Vignette: Using the Count Regression Toolkit",
+    "section": "Step 6: Interpretation",
+    "text": "Step 6: Interpretation\nFrom Model Output:\nA one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.\nThis interpretation is based on incidence rate ratios."
   },
   {
     "objectID": "index.html",
@@ -81,20 +88,34 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Quasi-Poisson Regression - Negative Binomial Regression - Zero-Inflated Poisson and Negative Binomial Models"
   },
   {
     "objectID": "about.html#project-overview",
     "href": "about.html#project-overview",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.\nThe toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation."
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Quasi-Poisson Regression - Negative Binomial Regression - Zero-Inflated Poisson and Negative Binomial Models"
   },
   {
-    "objectID": "about.html#what-is-count-regression",
-    "href": "about.html#what-is-count-regression",
+    "objectID": "about.html#applications",
+    "href": "about.html#applications",
     "title": "About",
-    "section": "What is Count Regression?",
-    "text": "What is Count Regression?"
+    "section": "Applications",
+    "text": "Applications\nCount regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.\nThe toolkit allows users to: - Upload data - Specify regression models - Model fitting and condition checks - Model comparisons - Interpretation of results"
+  },
+  {
+    "objectID": "about.html#how-to-use-the-app",
+    "href": "about.html#how-to-use-the-app",
+    "title": "About",
+    "section": "How to Use the App",
+    "text": "How to Use the App\n\nUpload your own dataset or choose a sample dataset\nSpecify a model formula (e.g., Kills ~ Age + Days)\nSelect a model type\nClick Fit Model\nClick through tabs to evaluate and interpret your results"
+  },
+  {
+    "objectID": "about.html#author",
+    "href": "about.html#author",
+    "title": "About",
+    "section": "Author",
+    "text": "Author\nDanny Molyneux\nData Analysis II Project"
   }
 ]

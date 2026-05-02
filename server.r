@@ -209,6 +209,7 @@ server <- (function(input, output, session){
       #                        choices = c(""),
       #                        selected = NULL)
       # }
+      
       updateActionButton(session, "sample", label = "Sample Data")
     }
   })
@@ -245,7 +246,6 @@ server <- (function(input, output, session){
     )
 
     shinyjs::show("select_factors")
-
     
     # if(globalVars$sample){
     #   if(input$sample_data_choice=="Palmer Penguins"){
@@ -527,7 +527,7 @@ server <- (function(input, output, session){
     best <- cleaned.table$model[which.min(cleaned.table$AIC)]
 
     HTML(paste0(
-      "<p>Among the models other than Quasi-Poisson, the <b> has the lowest AIC",
+      "<p>Among the models other than Quasi-Poisson, the lowest AIC is for <b>",
       best,
       "</b>. A lower AIC suggests a better model fit, but diagnostics need to be considered as well.</p>",
       "<p>Note: Quasi-Poisson was not included in the AIC comparison because it does not have a full likelihood.</p>"

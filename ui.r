@@ -115,6 +115,7 @@ ui <- tagList(
             placeholder = "count_response ~ predictor1 + predictor2"
           ),
 
+
           numericInput(
             "alpha",
             "Significance level:",
@@ -183,10 +184,10 @@ ui <- tagList(
               htmlOutput("dispersion_results"),
               br(),
               h3("Zero Inflation"),
-              htmlOutput("zero_inflation_results"),
-              br(),
-              h3("Model Suggestion"),
-              htmlOutput("model_suggestion")
+              htmlOutput("zero_inflation_results")
+              #br(),
+              #h3("Model Suggestion"),
+              #htmlOutput("model_suggestion")
             ),
 
             tabPanel(
