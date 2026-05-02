@@ -1,0 +1,43 @@
+---
+title: "AI Appendix"
+---
+
+## Overview
+
+This appendix documents how/where AI tools were used to assist me with this project.  
+
+---
+
+## Datasets
+
+Helped create and format example “bad” dataset to test missing values    
+
+---
+
+## Condition Checks and Diagnostics
+
+- Assisted in formatting the condition table   
+- Suggested the use of a helper function:
+  - `yn <- function(x) ifelse(isTRUE(x), "Yes", "No")`
+- Helped with the html formatting for interpreting dispersion ratio and zero-inflation diagnostics  
+
+---
+
+## Model Comparison
+
+- Helped implement `tryCatch()` syntax when running model comparison across all candidate models  
+- Assisted with html formatting for recommended model text
+
+---
+
+## Model Output and Interpretation
+
+- Provided help with formatting interpretation text for coefficients    
+- Gave guidance for separating interpretations in zero-inflated models  
+- Helped with some of the ggplot2 syntax for the estimated marginal means plots  
+
+---
+
+## User Interface
+
+- Assisted with HTML formatting 

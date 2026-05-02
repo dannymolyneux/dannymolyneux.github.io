@@ -380,15 +380,7 @@ server <- (function(input, output, session){
       "<p>", result$interpretation, "</p>"
     ))
   })
-  
-  # output$irr_table <- DT::renderDataTable({
-  #   req(vals$model, vals$model_type)
 
-  #   DT::datatable(
-  #     tidy_count_model(vals$model, vals$model_type, input$alpha),
-  #     options = list(pageLength = 10, scrollX = TRUE)
-  #   )
-  # })
 
   output$condition_plots <- renderPlot({
     req(vals$model)
@@ -524,43 +516,6 @@ server <- (function(input, output, session){
     HTML(text)
   })
   
-  output$emmeans_plot <- renderPlot({
-  req(vals$model, vals$model_data, vals$response)
-  req(input$emmeans_predictor)
-  req(input$emmeans_predictor != "None")
-  
-  if (vals$model_type %in% c(
-    "Zero-Inflated Poisson",
-    "Zero-Inflated Negative Binomial",
-    "Generalized Poisson"
-  )) {
-    plot.new()
-    text(
-      0.5, 0.5,
-      "Estimated mean plots are currently available for Poisson, Quasi-Poisson, and Negative Binomial models."
-    )
-    return()
-  }
-  #tryCatch syntax help from AI (makes sure emmeans plot can run)
-  tryCatch(
-    {
-      make_emmeans_plot(
-        model = vals$model,
-        data = vals$model_data,
-        formula_text = input$equation,
-        predictor = input$emmeans_predictor
-      )
-    },
-    error = function(e) {
-      plot.new()
-      text(
-        0.5, 0.5,
-        paste("Estimated mean plot could not be created:", e$message)
-      )
-    }
-  )
-  })
-
   output$emmeans_plot <- renderPlot({
     req(vals$model, vals$model_data, vals$response)
     req(input$emmeans_predictor)

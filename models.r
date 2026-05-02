@@ -25,7 +25,7 @@ fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
 }
 
 
-#function that displays the summary of the model (including percent change)
+#function that displays the summary of the model (including percent change and conf interval)
 tidy_count_model <- function(model, model_type, alpha = 0.05) {
   #anything but zero-inflated (all have same summary format)
   if (model_type %in% c("Poisson", "Quasi-Poisson", "Negative Binomial")) {
@@ -39,6 +39,8 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
       statistic = coefs[, 3],
       p.value = coefs[, 4],
       percent_change = round((exp(coefs[, "Estimate"]) - 1)*100, 2),
+      conf.low.pct = round((exp(ci[, 1]) - 1) * 100, 2),
+      conf.high.pct = round((exp(ci[, 2]) - 1) * 100, 2),
       row.names = NULL
     )
   }
@@ -204,8 +206,10 @@ make_emmeans_plot <- function(model, data, formula_text, predictor) {
   
   pred_values <- data[[predictor]]
   
+  #to know if smooth curve or discrete points
   if (!is.numeric(pred_values)) {
     
+    #emmeans plot
     em <- emmeans::emmeans(
       model,
       specs = as.formula(paste("~", predictor)),

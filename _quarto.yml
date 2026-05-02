@@ -12,6 +12,8 @@ website:
         text: About
       - href: vignette.qmd
         text: Vignette
+      - href: ai_appendix.qmd
+        text: AI Appendix
 
 format:
   html:

@@ -237,7 +237,7 @@ ui <- tagList(
                 br(),
 
                 h3("Model Summary"),
-                helpText("This table shows coefficient estimates, standard errors, test statistics, p-values, and percent change in expected count."),
+                helpText("This table shows coefficient estimates, standard errors, test statistics, p-values, and percent change in expected count (with confidenc interval)."),
                 shinycssloaders::withSpinner(
                   DT::dataTableOutput("model_summary")
                 ),
