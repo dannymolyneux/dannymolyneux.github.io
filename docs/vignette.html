@@ -157,6 +157,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="example-model" class="level2">
 <h2 class="anchored" data-anchor-id="example-model">Example Model</h2>
 <p>This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models.</p>
+<hr>
 </section>
 <section id="step-1-load-data" class="level2">
 <h2 class="anchored" data-anchor-id="step-1-load-data">Step 1: Load Data</h2>
@@ -175,14 +176,17 @@ ul.task-list li input[type="checkbox"] {
 <section id="step-3-check-conditions-and-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="step-3-check-conditions-and-diagnostics">Step 3: Check conditions and diagnostics</h2>
 <p>The “Model Conditions” and “Diagnostics” tabs show a dispersion ratio of 11.679, confirming the overdispersion, and indicating we should try an alternative model.</p>
+<hr>
 </section>
 <section id="step-4-try-alternative" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-try-alternative">Step 4: Try alternative</h2>
 <p>Try Negative Binomial so that we can use AIC and log-likelihood, while hopefully fixing the overdispersion issue. So fit the model again but as a Negative Binomial Regression.</p>
+<hr>
 </section>
 <section id="step-5-new-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-new-diagnostics">Step 5: New diagnostics</h2>
 <p>“Diagnostics” tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the “Model Comparison” tab, by comparing the AIC’s. A Generalized Poisson model also looks appropriate, so that can be used as well.</p>
+<hr>
 </section>
 <section id="step-6-interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="step-6-interpretation">Step 6: Interpretation</h2>
