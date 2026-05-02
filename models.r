@@ -18,9 +18,6 @@ fit_count_model <- function(formula_text, data, model_type) {
   } else if (model_type == "Zero-Inflated Poisson") {
     pscl::zeroinfl(form, data = data, dist = "poisson")
 
-  } else if (model_type == "Zero-Inflated Negative Binomial") {
-    pscl::zeroinfl(form, data = data, dist = "negbin")
-
   } else {
     stop("Unsupported model type.")
   }
@@ -98,4 +95,85 @@ count_gof_table <- function(model, model_type) {
       )
     )
   }
+}
+
+#function that tries to run each model, in order to run a comparison
+fit_candidate_models <- function(formula_text, data) {
+  form <- as.formula(formula_text)
+
+  models <- list()
+
+  models$Poisson <- tryCatch(
+    glm(form, data = data, family = poisson(link = "log")),
+    error = function(e) NULL
+  )
+
+  models$`Quasi-Poisson` <- tryCatch(
+    glm(form, data = data, family = quasipoisson(link = "log")),
+    error = function(e) NULL
+  )
+
+  models$`Negative Binomial` <- tryCatch(
+    MASS::glm.nb(form, data = data),
+    error = function(e) NULL
+  )
+
+  models$`Zero-Inflated Poisson` <- tryCatch(
+    pscl::zeroinfl(form, data = data, dist = "poisson"),
+    error = function(e) NULL
+  )
+
+  models$`Zero-Inflated Negative Binomial` <- tryCatch(
+    pscl::zeroinfl(form, data = data, dist = "negbin"),
+    error = function(e) NULL
+  )
+
+  models
+}
+
+#function that runs the model comparison
+make_model_comparison_table <- function(formula_text, data) {
+  models <- fit_candidate_models(formula_text, data)
+
+  rows <- lapply(names(models), function(model_name) {
+    mod <- models[[model_name]]
+
+    if (is.null(mod)) {
+      return(tibble::tibble(
+        model = model_name,
+        logLik = NA_real_,
+        AIC = NA_real_,
+        BIC = NA_real_,
+        dispersion_ratio = NA_real_,
+        note = "Model failed to fit."
+      ))
+    }
+
+    is_quasi <- model_name == "Quasi-Poisson"
+
+    disp <- tryCatch(
+      sum(residuals(mod, type = "pearson")^2) / df.residual(mod),
+      error = function(e) NA_real_
+    )
+
+    tibble::tibble(
+      model = model_name,
+      logLik = ifelse(is_quasi, NA_real_, as.numeric(logLik(mod))),
+      AIC = ifelse(is_quasi, NA_real_, AIC(mod)),
+      BIC = ifelse(is_quasi, NA_real_, BIC(mod)),
+      dispersion_ratio = disp,
+      note = dplyr::case_when(
+        is_quasi ~ "No AIC/logLik for quasi models.",
+        TRUE ~ "Fit successfully."
+      )
+    )
+  })
+
+  dplyr::bind_rows(rows) %>%
+    dplyr::mutate(
+      AIC = round(AIC, 3),
+      BIC = round(BIC, 3),
+      logLik = round(logLik, 3),
+      dispersion_ratio = round(dispersion_ratio, 3)
+    )
 }

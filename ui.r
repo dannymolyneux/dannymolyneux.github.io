@@ -59,6 +59,17 @@ library(effectsize)
 ui <- tagList(
   useShinyjs(),
 
+  tags$head(
+    tags$style(HTML("
+      .btn {padding: 6px 10px; font-size: 13px;}
+      .control-label {font-size: 14px;}
+      .form-control {height: auto; padding: 6px;}
+      .form-group {margin-bottom: 10px;}
+      .selectize-input, .selectize-dropdown {font-size: 13px;}
+      h3 {margin-top: 20px;}
+    "))
+  ),
+
   navbarPage(
     title = "Count Regression Toolkit",
     theme = shinytheme("flatly"),
@@ -101,7 +112,7 @@ ui <- tagList(
           textInput(
             "equation",
             "Model formula:",
-            placeholder = "count ~ x1 + x2"
+            placeholder = "count_response ~ predictor1 + predictor2"
           ),
 
           numericInput(
@@ -120,8 +131,7 @@ ui <- tagList(
                       "Poisson",
                       "Quasi-Poisson",
                       "Negative Binomial",
-                      "Zero-Inflated Poisson",
-                      "Zero-Inflated Negative Binomial"
+                      "Zero-Inflated Poisson"
                       ),
             selected = "Poisson"
           ),
@@ -144,46 +154,87 @@ ui <- tagList(
 
             tabPanel(
               "Data Preview",
-              DT::dataTableOutput("preview_data")
+              br(),
+              shinycssloaders::withSpinner(
+                DT::dataTableOutput("preview_data")
+              )
             ),
 
             tabPanel(
               "Data Summary",
+              br(),
               h3("Response Summary"),
-              DT::dataTableOutput("response_summary"),
+              shinycssloaders::withSpinner(
+              DT::dataTableOutput("response_summary")),
+              br(),
               h3("Count Distribution"),
-              plotOutput("count_distribution")
+              shinycssloaders::withSpinner(
+              plotOutput("count_distribution"))
             ),
 
             tabPanel(
               "Model Conditions",
-              htmlOutput("count_checks"),
+              br(),
+              h3("Condition Checks"),
+              shinycssloaders::withSpinner(
+              DT::dataTableOutput("condition_table")),
+              br(),
               h3("Dispersion"),
               htmlOutput("dispersion_results"),
-              h3("Zero Inflation")
+              br(),
+              h3("Zero Inflation"),
+              htmlOutput("zero_inflation_results"),
+              br(),
+              h3("Model Suggestion"),
+              htmlOutput("model_suggestion")
             ),
 
             tabPanel(
               "Diagnostics",
-              plotOutput("condition_plots"),
-              plotOutput("pearson_squared_plot"),
-              DT::dataTableOutput("gof_table")
+              br(),
+              h3("Randomized Quantile Residuals and QQ Plot"),
+              shinycssloaders::withSpinner(
+                plotOutput("condition_plots")
+              ),
+              br(),
+              h3("Fitted Values vs. Squared Pearson Residuals"),
+              shinycssloaders::withSpinner(
+                plotOutput("pearson_squared_plot")
+              ),
+              br(),
+              h3("Goodness-of-Fit Statistics"),
+              shinycssloaders::withSpinner(
+                DT::dataTableOutput("gof_table")
+              )
             ),
 
             tabPanel(
-              "Model Comparison"
-              #h3("Model Summary"),
-              #DT::dataTableOutput("model_summary"),
-              #h3("Incidence Rate Ratios"),
-              #DT::dataTableOutput("irr_table")
+              "Model Comparison",
+              br(),
+              h3("Candidate Model Comparison"),
+              shinycssloaders::withSpinner(
+                DT::dataTableOutput("model_comparison")
+              ),
+              br(),
+              h3("Recommended Model"),
+              htmlOutput("comparison_recommendation")
             ),
 
             tabPanel(
               "Model Output and Interpretation",
+              br(),
               h3("Model Summary"),
-              DT::dataTableOutput("model_summary"),
+              shinycssloaders::withSpinner(
+                DT::dataTableOutput("model_summary")
+              ),
+              br(),
               h3("Incidence Rate Ratios"),
-              DT::dataTableOutput("irr_table")
+              shinycssloaders::withSpinner(
+                DT::dataTableOutput("irr_table")
+              ),
+              br(),
+              h3("Plain-English Interpretation"),
+              htmlOutput("model_interpretation")
             ),
 
             

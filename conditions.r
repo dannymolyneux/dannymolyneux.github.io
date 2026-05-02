@@ -8,20 +8,64 @@ dispersion_ratio <- function(model) {
   sum(residuals(model, type = "pearson")^2) / model$df.residual
 }
 
-#function to interpret dispersion ratio
-check_overdispersion <- function(model) {
-  ratio <- dispersion_ratio(model)
+# #function to interpret dispersion ratio
+# check_overdispersion <- function(model) {
+#   ratio <- dispersion_ratio(model)
 
-  tibble(
-    check = "Overdispersion",
-    value = round(ratio, 3),
-    interpretation = case_when(
-      ratio < 1.2 ~ "No strong evidence of overdispersion.",
-      ratio < 2 ~ "Possible mild overdispersion. Consider Quasi-Poisson.",
-      TRUE ~ "Strong overdispersion. Consider Negative Binomial or Quasi-Poisson."
+#   tibble(
+#     check = "Overdispersion",
+#     value = round(ratio, 3),
+#     interpretation = case_when(
+#       ratio < 1.2 ~ "No strong evidence of overdispersion.",
+#       ratio < 2 ~ "Possible mild overdispersion. Consider Quasi-Poisson.",
+#       TRUE ~ "Strong overdispersion. Consider Negative Binomial or Quasi-Poisson."
+#     )
+#   )
+# }
+
+#table for all condition checks
+make_condition_table <- function(data, response, model, model_type, removed.n = 0) {
+  y <- data[[response]]
+
+  mean_y <- mean(y, na.rm = TRUE)
+  var_y <- var(y, na.rm = TRUE)
+  disp <- dispersion_ratio(model)
+
+  tibble::tibble(
+    condition = c(
+      "Rows removed for missing model variables",
+      "Response is numeric",
+      "Response is nonnegative",
+      "Response uses integer counts",
+      "Mean of response",
+      "Variance of response",
+      "Dispersion ratio"
+    ),
+    result = c(
+      removed.n,
+      is.numeric(y),
+      all(y >= 0, na.rm = TRUE),
+      all(y %% 1 == 0, na.rm = TRUE),
+      round(mean_y, 3),
+      round(var_y, 3),
+      round(disp, 3)
+    ),
+    interpretation = c(
+      ifelse(removed.n == 0, "No rows removed.", paste(removed.n, "rows were removed.")),
+      "Count responses should be numeric.",
+      "Counts should not be negative.",
+      "Counts should be whole numbers.",
+      "Used to compare mean and variance.",
+      "For Poisson, variance should be close to the mean.",
+      ifelse(
+        model_type == "Poisson",
+        ifelse(disp < 1.5, "Poisson dispersion looks acceptable.", "Poisson may be overdispersed."),
+        ifelse(model_type == "Negative Binomial", "NB is designed to handle overdispersion.", "Interpret based on selected model.")
+      )
     )
   )
 }
+
 
 #function to text zero-inlfation using DHARMa package
 check_zero_inflation_dharma <- function(model) {

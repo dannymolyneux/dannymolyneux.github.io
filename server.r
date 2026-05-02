@@ -36,6 +36,7 @@ server <- (function(input, output, session){
     model = NULL,
     model_type = NULL,
     response = NULL,
+    comparison_table = NULL,
     removed.n = 0
   )
   
@@ -368,6 +369,10 @@ server <- (function(input, output, session){
 
     vals$model_type <- input$model_type
 
+    vals$comparison_table <- make_model_comparison_table(
+      formula_text = input$equation,
+      data = cleaned$data
+    )
     updateTabsetPanel(session, "workPanel", selected = "Data Summary")
     
     
@@ -396,30 +401,50 @@ server <- (function(input, output, session){
       theme_minimal()
   })
 
-  output$count_checks <- renderUI({
-    req(vals$model_data, vals$response)
+  output$condition_table <- DT::renderDataTable({
+    req(vals$model_data, vals$response, vals$model, vals$model_type)
 
-    y <- vals$model_data[[vals$response]]
-
-    HTML(paste0(
-      "<p><b>Rows removed for missing model variables:</b> ", vals$removed.n, "</p>",
-      "<p><b>Response is numeric:</b> ", is.numeric(y), "</p>",
-      "<p><b>Response is nonnegative:</b> ", all(y >= 0), "</p>",
-      "<p><b>Response uses integer counts:</b> ", all(y %% 1 == 0), "</p>",
-      "<p><b>Mean:</b> ", round(mean(y), 3), "</p>",
-      "<p><b>Variance:</b> ", round(var(y), 3), "</p>"
-    ))
+    DT::datatable(
+    make_condition_table(
+      data = vals$model_data,
+      response = vals$response,
+      model = vals$model,
+      model_type = vals$model_type,
+      removed.n = vals$removed.n
+    ),
+    options = list(dom = "t", scrollX = TRUE)
+  )
   })
 
   output$dispersion_results <- renderUI({
-    req(vals$model)
+    req(vals$model, vals$model_type)
 
-    result <- check_overdispersion(vals$model)
+    result <- dispersion_ratio(vals$model)
+
+    message = if(vals$model_type == "Poisson") {
+      if (ratio < 1.5) {
+        "For a Poisson model, this dispersion ratio looks reasonably close to 1."
+    } else {
+        "For a Poisson model, this suggests overdispersion. Negative Binomial or Quasi-Poisson may be more appropriate."
+    }
+      
+    } else if (vals$model_type == "Quasi-Poisson") {
+        "Quasi-Poisson allows the variance to differ from the mean because it estimates a dispersion parameter. This is helpful when Poisson is overdispersed."
+
+    } else if(vals$model_type == "Negative Binomial") {
+        "Negative Binomial regression is designed for overdispersed count data, so a high dispersion ratio is less concerning than it would be for Poisson."
+
+    } else if (vals$model_type %in% c("Zero-Inflated Poisson", "Zero-Inflated Negative Binomial")) {
+        "Zero-inflated models address excess zeros by separately modeling zeros from the count process."
+
+    } else {
+        "Dispersion interpretation depends on the selected model."
+    }
 
     HTML(paste0(
-      "<p><b>Dispersion ratio:</b> ", result$value, "</p>",
-      "<p>", result$interpretation, "</p>"
-    ))
+    "<p><b>Dispersion ratio:</b> ", round(ratio, 3), "</p>",
+    "<p>", message, "</p>"
+     ))
   })
 
   output$model_summary <- DT::renderDataTable({
@@ -430,7 +455,26 @@ server <- (function(input, output, session){
       options = list(pageLength = 10, scrollX = TRUE)
     )
   })
+  
+  output$zero_inflation_results <- renderUI({
+    req(vals$model)
 
+    #makes sure the zero inflation check runs with no error
+    result <- tryCatch(
+      check_zero_inflation_dharma(vals$model),
+      error = function(e) NULL
+    )
+
+    if (is.null(result)) {
+      return(HTML("<p>Zero-inflation test could not be computed for this model.</p>"))
+    }
+
+    HTML(paste0(
+      "<p><b>DHARMa zero-inflation p-value:</b> ", round(result$p.value, 4), "</p>",
+      "<p>", result$interpretation, "</p>"
+    ))
+  })
+  
   output$irr_table <- DT::renderDataTable({
     req(vals$model, vals$model_type)
 
@@ -457,6 +501,37 @@ server <- (function(input, output, session){
       count_gof_table(vals$model, vals$model_type),
       options = list(dom = "t")
     )
+  })
+
+  output$model_comparison <- DT::renderDataTable({
+  req(vals$comparison_table)
+
+  DT::datatable(
+    vals$comparison_table,
+    options = list(pageLength = 10, scrollX = TRUE)
+  )
+  })
+
+  output$comparison_recommendation <- renderUI({
+    req(vals$comparison_table)
+
+    table <- vals$comparison_table
+
+    cleaned.table <- table %>%
+      dplyr::filter(!is.na(AIC))
+
+    if (nrow(cleaned.table) == 0) {
+      return(HTML("<p>No likelihood-based models were available for AIC comparison.</p>"))
+    }
+
+    best <- cleaned.table$model[which.min(cleaned.table$AIC)]
+
+    HTML(paste0(
+      "<p>Among the models other than Quasi-Poisson, the <b> has the lowest AIC",
+      best,
+      "</b>. A lower AIC suggests a better model fit, but diagnostics need to be considered as well.</p>",
+      "<p>Note: Quasi-Poisson was not included in the AIC comparison because it does not have a full likelihood.</p>"
+    ))
   })
   
 })
