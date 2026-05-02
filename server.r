@@ -78,6 +78,11 @@ server <- (function(input, output, session){
       mutate(across(where(is.character), as.factor))
 
     vals$dataset <- dat
+    vals$model <- NULL
+    vals$model_data <- NULL
+    vals$response <- NULL
+    vals$model_type <- NULL
+    vals$removed.n <- 0
 
     updateSelectizeInput(
       session,
@@ -85,12 +90,15 @@ server <- (function(input, output, session){
       choices = names(dat),
       selected = names(dat)[sapply(dat, is.factor)]
     )
+
     updateSelectInput(
-  session,
-  "offset_var",
-  choices = c("None", names(dat)),
-  selected = "None"
-)
+      session,
+      "offset_var",
+      choices = c("None", names(dat)),
+      selected = "None"
+    )
+
+  updateTextInput(session, "equation", value = "")
   })
   
   #############################################################################################
@@ -112,9 +120,17 @@ server <- (function(input, output, session){
       if (var %in% input$select_factors) {
         dat[[var]] <- as.factor(dat[[var]])
       }
+      else {
+        if (is.factor(dat[[var]]) && suppressWarnings(!any(is.na(as.numeric(as.character(dat[[var]])))))) {
+          dat[[var]] <- as.numeric(as.character(dat[[var]]))
+        }
+      }
     }
     
     vals$dataset = dat
+    vals$model = NULL
+    vals$model_data = NULL
+    vals$response = NULL
   })
   
  
@@ -197,6 +213,10 @@ server <- (function(input, output, session){
       vals$dataset <- NULL
       vals$model <- NULL
       vals$model_data <- NULL
+      vals$response <- NULL
+      vals$model_type <- NULL
+      vals$removed.n <- 0
+
       shinyjs::show("file_upload")
       shinyjs::hide("choose_sample")
       
@@ -216,13 +236,26 @@ server <- (function(input, output, session){
       #                        selected = NULL)
       # }
       updateSelectInput(
-  session,
-  "offset_var",
-  choices = c("None", names(dat)),
-  selected = "None"
-)
+      session,
+      "sample_data_choice",
+      selected = "Select a sample dataset"
+     )
+      updateSelectizeInput(
+      session,
+      "select_factors",
+      choices = NULL,
+      selected = NULL
+    )
+      updateSelectInput(
+        session,
+        "offset_var",
+        choices = "None",
+        selected = "None"
+      )
       
-      updateActionButton(session, "sample", label = "Sample Data")
+      updateTextInput(session, "equation", value = "")
+
+      updateActionButton(session, "sample", label = "Use Sample Data")
     }
   })
   
@@ -230,16 +263,34 @@ server <- (function(input, output, session){
   # When a new sample selected
   #############################################################################################
   observeEvent(input$sample_data_choice,{
-    if (input$sample_data_choice == "Select a dataset") {
+    if (input$sample_data_choice == "Select a sample dataset") {
       vals$dataset <- NULL
       vals$model <- NULL
       vals$model_data <- NULL
+      vals$model_type <- NULL
       vals$response <- NULL
       vals$removed.n <- 0
+
+      updateSelectizeInput(
+        session,
+        "select_factors",
+        choices = NULL,
+        selected = NULL
+      )
+
+      updateSelectInput(
+      session,
+      "offset_var",
+      choices = "None",
+      selected = "None"
+    )
+      
+      updateTextInput(session, "equation", value = "")
+      
       return(NULL)
-    }
+   }
     req(input$sample_data_choice)
-    req(input$sample_data_choice != "Select a dataset")
+    req(input$sample_data_choice != "Select a sample dataset")
     dat <- load_sample_data(input$sample_data_choice)
     req(dat)
 
@@ -247,29 +298,22 @@ server <- (function(input, output, session){
       mutate(across(where(is.character), as.factor))
 
     vals$dataset <- dat
-    vals$model <- NULL
-    vals$model_data <- NULL
- 
-    updateSelectizeInput(
-      session,
-      "select_factors",
-      choices = names(dat),
-      selected = names(dat)[sapply(dat, is.factor)]
-    )
-    updateSelectInput(
-  session,
-  "offset_var",
-  choices = c("None", names(dat)),
-  selected = "None"
-)
 
-    shinyjs::show("select_factors")
-    selectInput(
-  "offset_var",
-  "Optional exposure/offset variable:",
-  choices = c("None"),
-  selected = "None"
-)
+    updateSelectizeInput(
+    session,
+    "select_factors",
+    choices = names(dat),
+    selected = names(dat)[sapply(dat, is.factor)]
+  )
+
+  # --- Update offset variable choices ---
+  updateSelectInput(
+    session,
+    "offset_var",
+    choices = c("None", names(dat)),
+    selected = "None"
+  )
+   shinyjs::show("select_factors")
     # if(globalVars$sample){
     #   if(input$sample_data_choice=="Palmer Penguins"){
     #     library(palmerpenguins)

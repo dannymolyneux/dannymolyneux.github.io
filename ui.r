@@ -88,7 +88,7 @@ ui <- tagList(
           actionButton("sample", "Use Sample Data"),
           hidden(
             div(id = "choose_sample",
-                selectInput("sample_data_choice","Sample Data:",
+                selectInput("sample_data_choice","Use Sample Data:",
                             choices = c("Select a sample dataset",
                                         "Brockmann 1996",
                                         "Kitsberg 2025",
@@ -200,9 +200,9 @@ ui <- tagList(
             tabPanel(
               "Diagnostics",
               br(),
-              helpText("RQR Plot: Residuals should be randomly scattered with no clear pattern."),
-              helpText("QQ Plot: Points should lie close to the diagonal line."),
-              helpText("Pearson Residual Plot: No increasing trend should be visible. A strong upward pattern suggests overdispersion."),
+              helpText("RQR Plot: Residuals should be randomly scattered around 0 with no clear pattern."),
+              helpText("QQ Plot: Points should lie close to the diagonal line. Heavy tails can indicate overdispersion or outliers, and severe deviations can suggest a poor model choice."),
+              helpText("Pearson Residual Plot: No increasing trend should be visible. A strong upward pattern suggests overdispersion. A very scattered plot could suggest outliers or poor fit."),
               h3("Randomized Quantile Residuals and QQ Plot"),
               shinycssloaders::withSpinner(
                 plotOutput("condition_plots")
