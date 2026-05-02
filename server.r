@@ -557,5 +557,25 @@ server <- (function(input, output, session){
       "<p>Note: Quasi-Poisson was not included in the AIC comparison because it does not have a full likelihood.</p>"
     ))
   })
+
+  output$emmeans_table <- DT::renderDataTable({
+  req(vals$model)
+
+  # choose first predictor for now (simple version)
+  predictors <- all.vars(as.formula(input$equation))[-1]
+
+  if (length(predictors) == 0) return(NULL)
+
+  pred <- predictors[1]
+
+  emm <- tryCatch(
+    emmeans::emmeans(vals$model, specs = pred, type = "response"),
+    error = function(e) NULL
+  )
+
+  req(emm)
+
+  as.data.frame(emm)
+})
   
 })

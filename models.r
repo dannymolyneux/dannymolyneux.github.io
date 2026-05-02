@@ -98,8 +98,8 @@ count_gof_table <- function(model, model_type) {
 }
 
 #function that tries to run each model, in order to run a comparison
-fit_candidate_models <- function(formula_text, data) {
-  form <- as.formula(formula_text)
+fit_candidate_models <- function(formula_text, data, offset_var = NULL) {
+  form <- add_offset_to_formula(formula_text, offset_var)
 
   models <- list()
 
@@ -132,8 +132,8 @@ fit_candidate_models <- function(formula_text, data) {
 }
 
 #function that runs the model comparison
-make_model_comparison_table <- function(formula_text, data) {
-  models <- fit_candidate_models(formula_text, data)
+make_model_comparison_table <- function(formula_text, data, offset_var = NULL) {
+  models <- fit_candidate_models(formula_text, data, offset_var)
 
   rows <- lapply(names(models), function(model_name) {
     mod <- models[[model_name]]
