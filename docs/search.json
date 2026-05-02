@@ -25,7 +25,7 @@
     "href": "vignette.html#step-2-look-at-summary-of-data",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 2: Look at summary of data",
-    "text": "Step 2: Look at summary of data\nAfter pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787\n- Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
+    "text": "Step 2: Look at summary of data\nAfter choosing “Poisson” as our model type and pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787\n- Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
   },
   {
     "objectID": "vignette.html#step-3-check-conditions-and-diagnostics",
@@ -46,35 +46,35 @@
     "href": "vignette.html#step-5-new-diagnostics",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 5: New diagnostics",
-    "text": "Step 5: New diagnostics\n“Diagnostics” tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the “Model Comparison” tab, by comparing the AIC’s."
+    "text": "Step 5: New diagnostics\n“Diagnostics” tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the “Model Comparison” tab, by comparing the AIC’s. A Generalized Poisson model also looks appropriate, so that can be used as well."
   },
   {
     "objectID": "vignette.html#step-6-interpretation",
     "href": "vignette.html#step-6-interpretation",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 6: Interpretation",
-    "text": "Step 6: Interpretation\nFrom Model Output:\nA one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.\nThis interpretation is based on incidence rate ratios."
+    "text": "Step 6: Interpretation\nFrom Model Output for Negative Binomial:\nHolding other variables constant, a one-unit increase in Age is associated with a 5.73% increase in the expected count of kills.\nFrom Model Output for Generalized Poisson:\nHolding other variables constant, a one-unit increase in Age is associated with a 3.27% increase in the expected count of kills.\nThis interpretation is based on the exponentiated predictor coefficient."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include Poisson Regression, Quasi-Poisson Regression, Negative Binomial Regression and Zero-Inflated Poisson and Negative Binomial Models"
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Negative Binomial Regression - Quasi-Poisson Regression - Zero Inflated Model - Generalized Poisson Regression"
   },
   {
     "objectID": "about.html#project-overview",
     "href": "about.html#project-overview",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include Poisson Regression, Quasi-Poisson Regression, Negative Binomial Regression and Zero-Inflated Poisson and Negative Binomial Models"
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Negative Binomial Regression - Quasi-Poisson Regression - Zero Inflated Model - Generalized Poisson Regression"
   },
   {
     "objectID": "about.html#applications",
     "href": "about.html#applications",
     "title": "About",
     "section": "Applications",
-    "text": "Applications\nCount regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.\nThe toolkit allows users to Upload data, Specify regression models, Model fitting and condition checks, Model comparisons, and interpret results."
+    "text": "Applications\nCount regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.\nThe toolkit allows users to: - Upload data - Specify regression models - Model fitting and condition checks - Model comparisons - Analyze and interpret model summary and ouput"
   },
   {
     "objectID": "about.html#how-to-use-the-app",
