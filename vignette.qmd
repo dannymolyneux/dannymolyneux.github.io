@@ -1,11 +1,12 @@
 ---
 title: "Vignette: Using the Count Regression Toolkit"
-format: html
 ---
 
 ## Example Model
 
 This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models.
+
+---
 
 ## Step 1: Load Data
 
@@ -35,13 +36,19 @@ Clearly, the variance is much larger than the mean, which indicates overdispersi
 
 The "Model Conditions" and "Diagnostics" tabs show a dispersion ratio of 11.679, confirming the overdispersion, and indicating we should try an alternative model.
 
+---
+
 ## Step 4: Try alternative
 
 Try Negative Binomial so that we can use AIC and log-likelihood, while hopefully fixing the overdispersion issue. So fit the model again but as a Negative Binomial Regression.
 
+---
+
 ## Step 5: New diagnostics
 
 "Diagnostics" tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the "Model Comparison" tab, by comparing the AIC's. A Generalized Poisson model also looks appropriate, so that can be used as well.
+
+---
 
 ## Step 6: Interpretation
 

@@ -25,7 +25,7 @@
     "href": "vignette.html#step-2-look-at-summary-of-data",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 2: Look at summary of data",
-    "text": "Step 2: Look at summary of data\nAfter choosing “Poisson” as our model type and pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787\n- Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
+    "text": "Step 2: Look at summary of data\nAfter choosing “Poisson” as our model type and pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787 - Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
   },
   {
     "objectID": "vignette.html#step-3-check-conditions-and-diagnostics",
