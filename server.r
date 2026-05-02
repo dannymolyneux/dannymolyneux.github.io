@@ -85,6 +85,12 @@ server <- (function(input, output, session){
       choices = names(dat),
       selected = names(dat)[sapply(dat, is.factor)]
     )
+    updateSelectInput(
+  session,
+  "offset_var",
+  choices = c("None", names(dat)),
+  selected = "None"
+)
   })
   
   #############################################################################################
@@ -209,6 +215,12 @@ server <- (function(input, output, session){
       #                        choices = c(""),
       #                        selected = NULL)
       # }
+      updateSelectInput(
+  session,
+  "offset_var",
+  choices = c("None", names(dat)),
+  selected = "None"
+)
       
       updateActionButton(session, "sample", label = "Sample Data")
     }
@@ -244,9 +256,20 @@ server <- (function(input, output, session){
       choices = names(dat),
       selected = names(dat)[sapply(dat, is.factor)]
     )
+    updateSelectInput(
+  session,
+  "offset_var",
+  choices = c("None", names(dat)),
+  selected = "None"
+)
 
     shinyjs::show("select_factors")
-    
+    selectInput(
+  "offset_var",
+  "Optional exposure/offset variable:",
+  choices = c("None"),
+  selected = "None"
+)
     # if(globalVars$sample){
     #   if(input$sample_data_choice=="Palmer Penguins"){
     #     library(palmerpenguins)
@@ -359,19 +382,20 @@ server <- (function(input, output, session){
       return(NULL)
     }
 
-    cleaned <- clean_model_data(vals$dataset, input$equation)
+    cleaned <- clean_model_data(vals$dataset, input$equation, offset_var = input$offset_var)
 
     vals$model_data <- cleaned$data
     vals$response <- response
     vals$removed.n <- cleaned$removed.n
 
-    vals$model <- fit_count_model(input$equation, cleaned$data, input$model_type)
+    vals$model <- fit_count_model(input$equation, cleaned$data, input$model_type, offset_var = NULL)
 
     vals$model_type <- input$model_type
 
     vals$comparison_table <- make_model_comparison_table(
       formula_text = input$equation,
-      data = cleaned$data
+      data = cleaned$data,
+      offset_var = input$offset_var
     )
     updateTabsetPanel(session, "workPanel", selected = "Data Summary")
     

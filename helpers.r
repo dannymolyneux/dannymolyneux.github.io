@@ -16,9 +16,13 @@ get_response_name <- function(formula_text) {
 }
 
 #function cleans data and stores those changes
-clean_model_data <- function(data, formula_text) {
+clean_model_data <- function(data, formula_text, offset_var = NULL) {
   vars <- all.vars(as.formula(formula_text))
 
+  if (!is.null(offset_var) && offset_var != "None") {
+    vars <- unique(c(vars, offset_var))
+  }
+  
   before.n <- nrow(data)
 
   cleaned <- data %>%

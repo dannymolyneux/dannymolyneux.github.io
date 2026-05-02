@@ -115,6 +115,13 @@ ui <- tagList(
             placeholder = "count_response ~ predictor1 + predictor2"
           ),
 
+          selectInput(
+  "offset_var",
+  "Optional offset variable:",
+  choices = c("None"),
+  selected = "None"
+),
+
 
           numericInput(
             "alpha",

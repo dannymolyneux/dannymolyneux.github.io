@@ -4,8 +4,8 @@ library(MASS)
 library(pscl)
 
 #fits the model
-fit_count_model <- function(formula_text, data, model_type) {
-  form = as.formula(formula_text)
+fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
+  form = add_offset_to_formula(formula_text, offset_var)
   if (model_type == "Poisson") {
     glm(form, data = data, family = poisson(link = "log"))
 
@@ -176,4 +176,15 @@ make_model_comparison_table <- function(formula_text, data) {
       logLik = round(logLik, 3),
       dispersion_ratio = round(dispersion_ratio, 3)
     )
+}
+
+#allows for user to choose an offset 
+add_offset_to_formula <- function(formula_text, offset_var = NULL) {
+  if (is.null(offset_var) || offset_var == "None") {
+    return(as.formula(formula_text))
+  }
+
+  as.formula(
+    paste0(formula_text, " + offset(log(", offset_var, "))")
+  )
 }
