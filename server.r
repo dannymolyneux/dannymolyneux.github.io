@@ -44,26 +44,6 @@ server <- (function(input, output, session){
   )
   
   ##############################################
-  # PROCESS UPLOADED DATA
-  ##############################################
-  # upload_data<-reactive({
-  #   req(input$file_upload)
-  #   tryCatch({
-  #     dat <- read.csv(input$file_upload$datapath)},
-  #     error = function(e){
-  #       # return a safeError if a parsing error occurs
-  #       stop(safeError(e))
-  #     }
-  #   )
-  #   globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
-  #     mutate_if(is.integer,as.numeric)
-  #   globalVars$dataset.original <- globalVars$dataset
-    
-  #   updateFactorsSelectize()
-  #   emptyEquation()
-  # })
-  
-  ##############################################
   # DATASET PREVIEW
   ##############################################
   output$preview_data <- DT::renderDataTable({
@@ -104,16 +84,6 @@ server <- (function(input, output, session){
   updateTextInput(session, "equation", value = "")
   })
   
-  #############################################################################################
-  # When factors are selected -- update dataset
-  #############################################################################################
-  
-  # can.be.numeric <- function(x) {
-  #   stopifnot(is.atomic(x) || is.list(x)) # check if x is a vector
-  #   numNAs <- sum(is.na(x))
-  #   numNAs_new <- suppressWarnings(sum(is.na(as.numeric(as.character(x))))) # if already a factor as.numeric works
-  #   return(numNAs_new == numNAs)
-  # }
   
   observeEvent(input$select_factors,{
     req(vals$dataset)
@@ -204,157 +174,7 @@ server <- (function(input, output, session){
     updateActionButton(session, "sample", label = "Use Sample Data")
   }
 
-  #   vals$sample <- !vals$sample
-
-  # if (vals$sample) {
-
-  #   shinyjs::hide("file_upload")
-  #   shinyjs::show("choose_sample")
-
-  #   updateActionButton(
-  #     session,
-  #     "sample",
-  #     label = "<- Back"
-  #   )
-
-  # } else {
-
-  #   vals$dataset <- NULL
-  #   vals$model <- NULL
-  #   vals$model_data <- NULL
-  #   vals$response <- NULL
-  #   vals$model_type <- NULL
-  #   vals$removed.n <- 0
-
-  #   shinyjs::show("file_upload")
-  #   shinyjs::hide("choose_sample")
-
-  #   updateSelectInput(
-  #     session,
-  #     "sample_data_choice",
-  #     selected = "Select a sample dataset"
-  #   )
-
-  #   updateSelectizeInput(
-  #     session,
-  #     "select_factors",
-  #     choices = character(0),
-  #     selected = character(0)
-  #   )
-
-  #   updateSelectInput(
-  #     session,
-  #     "offset_var",
-  #     choices = c("None"),
-  #     selected = "None"
-  #   )
-
-  #   updateTextInput(session, "equation", value = "")
-
-  #   updateActionButton(
-  #     session,
-  #     "sample",
-  #     label = "Use Sample Data"
-  #   )
-  # }
   })
-
-
-    # globalVars$changed.input <- TRUE
-    # updateTabsetPanel(session, "workPanel", selected = "data")
-    # globalVars$model <- NULL
-    # hideAllTabs()
-    # hideInteractionInput()
-    # uncheckAllAssumptions()
-    # emptyEquation()
-
-
-    # if (is.null(vals$sample)) {
-    #   vals$sample <- FALSE
-    # } 
-
-    # vals$sample <- !vals$sample
-
-
-    # if(vals$sample){
-      #globalVars$sample <- TRUE
-      #globalVars$dataset <- NULL
-      #shinyjs::hide("file_upload")
-      #shinyjs::show("choose_sample")
-      #shinyjs::show("select_factors")
-      
-      # if(input$sample_data_choice=="Palmer Penguins"){
-      #   library(palmerpenguins)
-      #   dat<-data.frame(penguins)
-      # }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
-      #   dat<-read.csv("www/mfap4.csv")%>%
-      #     mutate(Age=as.numeric(Age))
-      # }else if(input$sample_data_choice=="U.S. News College Data"){
-      #   library(ISLR)
-      #   dat<-College
-      # }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
-      #   dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
-      # }
-      # globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
-      #   mutate_if(is.integer,as.numeric)
-      # globalVars$dataset.original <- dat %>% mutate_if(is.character,as.factor)%>%
-      #   mutate_if(is.integer,as.numeric)
-      
-      #updateActionButton(session, "sample", label = "<- Back")
-      # updateFactorsSelectize()
-      
-    # } else {
-    #   #globalVars$sample <- FALSE
-    #   vals$dataset <- NULL
-    #   vals$model <- NULL
-    #   vals$model_data <- NULL
-    #   vals$response <- NULL
-    #   vals$model_type <- NULL
-    #   vals$removed.n <- 0
-
-    #   shinyjs::show("file_upload")
-    #   shinyjs::hide("choose_sample")
-      
-      # if(!is.null(input$file_upload)){
-      #   inFile <<- upload_data()
-      #   shinyjs::show("select_factors")
-      #   updateFactorsSelectize()
-        
-      # }else{
-      #   shinyjs::hide("select_factors")
-      #   globalVars$dataset <- NULL
-      #   globalVars$dataset.original <- NULL
-      #   globalVars$fcts <- NULL
-      #   updateSelectizeInput(session, "select_factors",
-      #                        "Specify Categorical Variables in the Data:",
-      #                        choices = c(""),
-      #                        selected = NULL)
-      # }
-
-
-  #     updateSelectInput(
-  #     session,
-  #     "sample_data_choice",
-  #     selected = "Select a sample dataset"
-  #    )
-  #     updateSelectizeInput(
-  #     session,
-  #     "select_factors",
-  #     choices = NULL,
-  #     selected = NULL
-  #   )
-  #     updateSelectInput(
-  #       session,
-  #       "offset_var",
-  #       choices = "None",
-  #       selected = "None"
-  #     )
-      
-  #     updateTextInput(session, "equation", value = "")
-
-  #     updateActionButton(session, "sample", label = "Use Sample Data")
-  #   }
-  # })
   
   #############################################################################################
   # When a new sample selected
@@ -413,96 +233,7 @@ server <- (function(input, output, session){
   )
    shinyjs::show("select_factors")
   })
-    # if(globalVars$sample){
-    #   if(input$sample_data_choice=="Palmer Penguins"){
-    #     library(palmerpenguins)
-    #     dat<-data.frame(penguins)
-    #   }else if(input$sample_data_choice=="Bracht et al. MFAP4" ){
-    #     dat<-read.csv("www/mfap4.csv")%>%
-    #       mutate(Age=as.numeric(Age))
-    #   }else if(input$sample_data_choice=="U.S. News College Data"){
-    #     library(ISLR)
-    #     dat<-College
-    #   }else if(input$sample_data_choice=="Cooley's Poor Beliefs Data"){
-    #     dat<-read.csv("www/poorbeliefs.csv") %>% mutate(Democrat = factor(Democrat))
-    #   } else if(input$sample_data_choice=="Lai et al. Tree Data"){
-    #     dat<-read.csv("www/LaiTreeData.csv") %>% mutate(sp = factor(sp))
-    #   } else if(input$sample_data_choice=="Lai et al. Schima Superba"){
-    #     dat<-read.csv("www/LaiTreeData-SS.csv") %>% mutate(sp = factor(sp))
-    #   } else if(input$sample_data_choice=="Loven et al. Road Weather Data"){
-    #     dat<-read.csv("www/HalikkoAsphalt.csv") %>% mutate(RoadState = factor(RoadState))
-    #   }
-    #   shinyjs::show("select_factors")
-    #   globalVars$dataset <- dat %>% mutate_if(is.character,as.factor)%>%
-    #     mutate_if(is.integer,as.numeric)
-    #   globalVars$dataset.original <- globalVars$dataset
-      
-    #   updateFactorsSelectize()
-    #   hideInteractionInput()
-    #   emptyEquation()
-    #   uncheckAllAssumptions()
-    #   hideAllTabs()
-    # }
-  
-  ########################################
-  # Check Equation Input
-  ########################################
-  # checkEquationValidity <- function(){
-    
-  #   run <- TRUE
-  #     dat <- globalVars$dataset
-      
-  #     if (run & grepl("~", input$equation)) {
-  #       subbed <- str_replace_all(input$equation,fixed("+"),"~")
-  #       subbed <- str_replace_all(subbed,fixed("*"),"~")
-  #       subbed <- str_replace_all(subbed,fixed(":"),"~")
-  #       variables <- trimws(str_split(string = subbed, pattern = "~", simplify = T))
-        
-  #       if(length(variables)>=2 && variables[2]!=""){
-  #         globalVars$response <- variables[1]
-          
-  #         if(!(substr(globalVars$response, start=0, stop=16) %in% c("ihs.transformed.", "log.transformed.", "lp1.transformed."))){
-  #           globalVars$transform.type <- "none"
-            
-  #           globalVars$dataset <- globalVars$dataset %>%
-  #             dplyr::select(-starts_with("ihs.transformed.")) %>%
-  #             dplyr::select(-starts_with("log.transformed.")) %>%
-  #             dplyr::select(-starts_with("lp1.transformed."))
-  #         }
-          
-  #         globalVars$equation <- input$equation
-
-  #         #Check for misspellings 
-  #         if(!all(variables %in% colnames(globalVars$dataset))){
-  #           run <- FALSE
-  #           shinyalert("Error!", text = "One of the variables in your equation does not exist in the data set. Please check your equation again for spelling or other errors.", type = "error")          
-  #           # check for correct response
-  #         }else if(!(is.numeric(globalVars$dataset[[variables[,1]]]))){
-  #           run <- FALSE
-  #           shinyalert("Error!", text = "Please make sure to choose a numeric response variable.", type = "error")
-  #           # check for bad categorical variables
-  #         }else{
-  #           # Check for too many levels on explanatory variables
-  #           for (i in 2:length(variables)){
-  #             if(!is.numeric(globalVars$dataset[[variables[i]]])){
-  #               if (length(unique(as.character(globalVars$dataset[[variables[i]]]))) > 12){
-  #                 shinyalert("Error!", text = "One of your categorical predictor variables has more than the maximum supported number of unique levels (12). Please check that the predictor is indeed categorical or adjust your regression equation.", type = "error")
-  #                 run <- FALSE
-  #                 break
-  #               }
-  #             }
-  #           } 
-  #         }
-  #       }else{
-  #         run <- FALSE
-  #         shinyalert("Error!", text="Your regression equation is not correctly specified, please rewrite it.", type = "error")
-  #       }
-  #     }else{
-  #       run <- FALSE
-  #       shinyalert("Error!", text="Your regression equation is not correctly specified, please rewrite it.", type = "error")
-  #     }
-  #   return(run)
-  #   }
+   
   
   #############################################################################################
   # When a new sample selected

@@ -266,6 +266,12 @@ ui <- tagList(
           )
         )
       )
-    )
+    ),
+    tabPanel(
+      "References",
+      fluidPage(
+        includeHTML("www/bib.html")
+      )
+    )  
   )
 )
