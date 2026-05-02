@@ -24,10 +24,12 @@ Predictor:
 ## Step 2: Look at summary of data
 
 After choosing "Poisson" as our model type and pressing **Fit Model**, the "Data Summary" tab should show:
-- Mean: 2.787  
+- Mean: 2.787
 - Variance: 40.171  
 
 Clearly, the variance is much larger than the mean, which indicates overdispersion.
+
+---
 
 ## Step 3: Check conditions and diagnostics
 
