@@ -25,7 +25,8 @@ check_overdispersion <- function(model) {
 
 #function to text zero-inlfation using DHARMa package
 check_zero_inflation_dharma <- function(model) {
-  test <- DHARMa::testZeroInflation(model)
+  sim_res <- DHARMa::simulateResiduals(model)
+  test <- DHARMa::testZeroInflation(sim_res)
 
   data.frame(
     check = "Zero inflation",
@@ -40,7 +41,7 @@ check_zero_inflation_dharma <- function(model) {
 }
 
 #Makes RQR plot and qq plot with dispersion ratio
-make_poisson_conditions_plot <- function(model) {
+make_conditions_plot <- function(model) {
   counts <- model$y
   lambdas <- fitted(model)
   rqr <- rep(NA, length(lambdas))
@@ -68,7 +69,7 @@ make_poisson_conditions_plot <- function(model) {
   p1+p2
 }
 
-make_poisson_pearson_squared_plot <- function(model) {
+make_pearson_squared_plot <- function(model) {
   lambdas <- fitted(model, type="response")
 
   ggdat <- tibble(r = resid(model, type="pearson")^2,

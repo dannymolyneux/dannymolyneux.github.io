@@ -9,7 +9,7 @@
 # #################################################################################################
 # #################################################################################################
 # #################################################################################################
-library(Hmisc)      #correlations and tests (still here, here due to overriding summarize)
+library(Hmisc)     
 
 ##########################################
 # Shiny
@@ -113,7 +113,20 @@ ui <- tagList(
             step = 0.001
           ),
 
-          actionButton("DoCompute", "Fit Poisson Model"),
+          selectInput(
+            "model_type",
+            "Choose count regression model:",
+            choices = c(
+                      "Poisson",
+                      "Quasi-Poisson",
+                      "Negative Binomial",
+                      "Zero-Inflated Poisson",
+                      "Zero-Inflated Negative Binomial"
+                      ),
+            selected = "Poisson"
+          ),
+
+          actionButton("DoCompute", "Fit Model"),
 
           tags$hr(),
 
@@ -135,7 +148,7 @@ ui <- tagList(
             ),
 
             tabPanel(
-              "Summary",
+              "Data Summary",
               h3("Response Summary"),
               DT::dataTableOutput("response_summary"),
               h3("Count Distribution"),
@@ -143,25 +156,37 @@ ui <- tagList(
             ),
 
             tabPanel(
-              "Poisson Checks",
+              "Model Conditions",
               htmlOutput("count_checks"),
-              h3("Overdispersion"),
-              htmlOutput("dispersion_results")
+              h3("Dispersion"),
+              htmlOutput("dispersion_results"),
+              h3("Zero Inflation")
             ),
 
             tabPanel(
-              "Model Output",
+              "Diagnostics",
+              plotOutput("condition_plots"),
+              plotOutput("pearson_squared_plot"),
+              DT::dataTableOutput("gof_table")
+            ),
+
+            tabPanel(
+              "Model Comparison"
+              #h3("Model Summary"),
+              #DT::dataTableOutput("model_summary"),
+              #h3("Incidence Rate Ratios"),
+              #DT::dataTableOutput("irr_table")
+            ),
+
+            tabPanel(
+              "Model Output and Interpretation",
               h3("Model Summary"),
               DT::dataTableOutput("model_summary"),
               h3("Incidence Rate Ratios"),
               DT::dataTableOutput("irr_table")
             ),
 
-            tabPanel(
-              "Conditions",
-              plotOutput("condition_plots"),
-              DT::dataTableOutput("gof_table")
-            )
+            
           )
         )
       )
