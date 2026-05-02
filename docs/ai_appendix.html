@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Vignette: Using the Count Regression Toolkit – Count Regression Toolkit</title>
+<title>AI Appendix – Count Regression Toolkit</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -99,11 +99,11 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./vignette.html" aria-current="page"> 
+    <a class="nav-link" href="./vignette.html"> 
 <span class="menu-text">Vignette</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./ai_appendix.html"> 
+    <a class="nav-link active" href="./ai_appendix.html" aria-current="page"> 
 <span class="menu-text">AI Appendix</span></a>
   </li>  
 </ul>
@@ -122,13 +122,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#example-model" id="toc-example-model" class="nav-link active" data-scroll-target="#example-model">Example Model</a></li>
-  <li><a href="#step-1-load-data" id="toc-step-1-load-data" class="nav-link" data-scroll-target="#step-1-load-data">Step 1: Load Data</a></li>
-  <li><a href="#step-2-look-at-summary-of-data" id="toc-step-2-look-at-summary-of-data" class="nav-link" data-scroll-target="#step-2-look-at-summary-of-data">Step 2: Look at summary of data</a></li>
-  <li><a href="#step-3-check-conditions-and-diagnostics" id="toc-step-3-check-conditions-and-diagnostics" class="nav-link" data-scroll-target="#step-3-check-conditions-and-diagnostics">Step 3: Check conditions and diagnostics</a></li>
-  <li><a href="#step-4-try-alternative" id="toc-step-4-try-alternative" class="nav-link" data-scroll-target="#step-4-try-alternative">Step 4: Try alternative</a></li>
-  <li><a href="#step-5-new-diagnostics" id="toc-step-5-new-diagnostics" class="nav-link" data-scroll-target="#step-5-new-diagnostics">Step 5: New diagnostics</a></li>
-  <li><a href="#step-6-interpretation" id="toc-step-6-interpretation" class="nav-link" data-scroll-target="#step-6-interpretation">Step 6: Interpretation</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
+  <li><a href="#condition-checks-and-diagnostics" id="toc-condition-checks-and-diagnostics" class="nav-link" data-scroll-target="#condition-checks-and-diagnostics">Condition Checks and Diagnostics</a></li>
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">Model Comparison</a></li>
+  <li><a href="#model-output-and-interpretation" id="toc-model-output-and-interpretation" class="nav-link" data-scroll-target="#model-output-and-interpretation">Model Output and Interpretation</a></li>
+  <li><a href="#user-interface" id="toc-user-interface" class="nav-link" data-scroll-target="#user-interface">User Interface</a></li>
   </ul>
 </nav>
     </div>
@@ -137,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Vignette: Using the Count Regression Toolkit</h1>
+<h1 class="title">AI Appendix</h1>
 </div>
 
 
@@ -154,41 +153,54 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="example-model" class="level2">
-<h2 class="anchored" data-anchor-id="example-model">Example Model</h2>
-<p>This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models.</p>
-</section>
-<section id="step-1-load-data" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-load-data">Step 1: Load Data</h2>
-<p>Use the sample dataset:</p>
-<p><strong>Ache Monkey (McMillan)</strong></p>
-<p>Response variable: - <code>Kills</code> (number of successful hunts)</p>
-<p>Predictor: - <code>Age</code></p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This appendix documents how/where AI tools were used to assist me with this project.</p>
 <hr>
 </section>
-<section id="step-2-look-at-summary-of-data" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-look-at-summary-of-data">Step 2: Look at summary of data</h2>
-<p>After pressing <strong>Fit Model</strong>, the “Data Summary” tab should show: - Mean: 2.787<br>
-- Variance: 40.171</p>
-<p>Clearly, the variance is much larger than the mean, which indicates overdispersion.</p>
+<section id="datasets" class="level2">
+<h2 class="anchored" data-anchor-id="datasets">Datasets</h2>
+<p>Helped create and format example “bad” dataset to test missing values</p>
+<hr>
 </section>
-<section id="step-3-check-conditions-and-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-check-conditions-and-diagnostics">Step 3: Check conditions and diagnostics</h2>
-<p>The “Model Conditions” and “Diagnostics” tabs show a dispersion ratio of 11.679, confirming the overdispersion, and indicating we should try an alternative model.</p>
+<section id="condition-checks-and-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="condition-checks-and-diagnostics">Condition Checks and Diagnostics</h2>
+<ul>
+<li>Assisted in formatting the condition table<br>
+</li>
+<li>Suggested the use of a helper function:
+<ul>
+<li><code>yn &lt;- function(x) ifelse(isTRUE(x), "Yes", "No")</code></li>
+</ul></li>
+<li>Helped with the html formatting for interpreting dispersion ratio and zero-inflation diagnostics</li>
+</ul>
+<hr>
 </section>
-<section id="step-4-try-alternative" class="level2">
-<h2 class="anchored" data-anchor-id="step-4-try-alternative">Step 4: Try alternative</h2>
-<p>Try Negative Binomial so that we can use AIC and log-likelihood, while hopefully fixing the overdispersion issue. So fit the model again but as a Negative Binomial Regression.</p>
+<section id="model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison">Model Comparison</h2>
+<ul>
+<li>Helped implement <code>tryCatch()</code> syntax when running model comparison across all candidate models<br>
+</li>
+<li>Assisted with html formatting for recommended model text</li>
+</ul>
+<hr>
 </section>
-<section id="step-5-new-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="step-5-new-diagnostics">Step 5: New diagnostics</h2>
-<p>“Diagnostics” tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the “Model Comparison” tab, by comparing the AIC’s.</p>
+<section id="model-output-and-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="model-output-and-interpretation">Model Output and Interpretation</h2>
+<ul>
+<li>Provided help with formatting interpretation text for coefficients<br>
+</li>
+<li>Gave guidance for separating interpretations in zero-inflated models<br>
+</li>
+<li>Helped with some of the ggplot2 syntax for the estimated marginal means plots</li>
+</ul>
+<hr>
 </section>
-<section id="step-6-interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="step-6-interpretation">Step 6: Interpretation</h2>
-<p>From Model Output:</p>
-<p>A one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.</p>
-<p>This interpretation is based on incidence rate ratios.</p>
+<section id="user-interface" class="level2">
+<h2 class="anchored" data-anchor-id="user-interface">User Interface</h2>
+<ul>
+<li>Assisted with HTML formatting</li>
+</ul>
 
 
 </section>

@@ -56,34 +56,6 @@
     "text": "Step 6: Interpretation\nFrom Model Output:\nA one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.\nThis interpretation is based on incidence rate ratios."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Count Regression Toolkit",
-    "section": "",
-    "text": "This website documents my Data Analysis II software toolkit for count regression."
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "Count Regression Toolkit",
-    "section": "",
-    "text": "This website documents my Data Analysis II software toolkit for count regression."
-  },
-  {
-    "objectID": "index.html#launching-the-app",
-    "href": "index.html#launching-the-app",
-    "title": "Count Regression Toolkit",
-    "section": "Launching the App",
-    "text": "Launching the App\nThe Shiny app is included in this GitHub repository: https://github.com/dannymolyneux/dannymolyneux.github.io\nTo run the app:\n\nClone the repository from GitHub:\nhttps://github.com/dannymolyneux/dannymolyneux.github.io.git\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click Run App."
-  },
-  {
-    "objectID": "index.html#pages",
-    "href": "index.html#pages",
-    "title": "Count Regression Toolkit",
-    "section": "Pages",
-    "text": "Pages\nUse the navigation bar to read about the project and view the vignette."
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -117,5 +89,82 @@
     "title": "About",
     "section": "Author",
     "text": "Author\nDanny Molyneux\nData Analysis II Project"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Count Regression Toolkit",
+    "section": "",
+    "text": "This website documents my Data Analysis II software toolkit for count regression."
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "Count Regression Toolkit",
+    "section": "",
+    "text": "This website documents my Data Analysis II software toolkit for count regression."
+  },
+  {
+    "objectID": "index.html#launching-the-app",
+    "href": "index.html#launching-the-app",
+    "title": "Count Regression Toolkit",
+    "section": "Launching the App",
+    "text": "Launching the App\nThe Shiny app is included in this GitHub repository: https://github.com/dannymolyneux/dannymolyneux.github.io\nTo run the app:\n\nClone the repository from GitHub:\nhttps://github.com/dannymolyneux/dannymolyneux.github.io.git\nOpen R or RStudio\nRun:\n\nshiny::runApp()\nOr open the “app.r” file, and click Run App."
+  },
+  {
+    "objectID": "index.html#pages",
+    "href": "index.html#pages",
+    "title": "Count Regression Toolkit",
+    "section": "Pages",
+    "text": "Pages\nUse the navigation bar to read about the project and view the vignette."
+  },
+  {
+    "objectID": "ai_appendix.html",
+    "href": "ai_appendix.html",
+    "title": "AI Appendix",
+    "section": "",
+    "text": "This appendix documents how/where AI tools were used to assist me with this project."
+  },
+  {
+    "objectID": "ai_appendix.html#overview",
+    "href": "ai_appendix.html#overview",
+    "title": "AI Appendix",
+    "section": "",
+    "text": "This appendix documents how/where AI tools were used to assist me with this project."
+  },
+  {
+    "objectID": "ai_appendix.html#datasets",
+    "href": "ai_appendix.html#datasets",
+    "title": "AI Appendix",
+    "section": "Datasets",
+    "text": "Datasets\nHelped create and format example “bad” dataset to test missing values"
+  },
+  {
+    "objectID": "ai_appendix.html#condition-checks-and-diagnostics",
+    "href": "ai_appendix.html#condition-checks-and-diagnostics",
+    "title": "AI Appendix",
+    "section": "Condition Checks and Diagnostics",
+    "text": "Condition Checks and Diagnostics\n\nAssisted in formatting the condition table\n\nSuggested the use of a helper function:\n\nyn &lt;- function(x) ifelse(isTRUE(x), \"Yes\", \"No\")\n\nHelped with the html formatting for interpreting dispersion ratio and zero-inflation diagnostics"
+  },
+  {
+    "objectID": "ai_appendix.html#model-comparison",
+    "href": "ai_appendix.html#model-comparison",
+    "title": "AI Appendix",
+    "section": "Model Comparison",
+    "text": "Model Comparison\n\nHelped implement tryCatch() syntax when running model comparison across all candidate models\n\nAssisted with html formatting for recommended model text"
+  },
+  {
+    "objectID": "ai_appendix.html#model-output-and-interpretation",
+    "href": "ai_appendix.html#model-output-and-interpretation",
+    "title": "AI Appendix",
+    "section": "Model Output and Interpretation",
+    "text": "Model Output and Interpretation\n\nProvided help with formatting interpretation text for coefficients\n\nGave guidance for separating interpretations in zero-inflated models\n\nHelped with some of the ggplot2 syntax for the estimated marginal means plots"
+  },
+  {
+    "objectID": "ai_appendix.html#user-interface",
+    "href": "ai_appendix.html#user-interface",
+    "title": "AI Appendix",
+    "section": "User Interface",
+    "text": "User Interface\n\nAssisted with HTML formatting"
   }
 ]
