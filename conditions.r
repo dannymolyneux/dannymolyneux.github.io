@@ -8,28 +8,15 @@ dispersion_ratio <- function(model) {
   sum(residuals(model, type = "pearson")^2) / model$df.residual
 }
 
-# #function to interpret dispersion ratio
-# check_overdispersion <- function(model) {
-#   ratio <- dispersion_ratio(model)
-
-#   tibble(
-#     check = "Overdispersion",
-#     value = round(ratio, 3),
-#     interpretation = case_when(
-#       ratio < 1.2 ~ "No strong evidence of overdispersion.",
-#       ratio < 2 ~ "Possible mild overdispersion. Consider Quasi-Poisson.",
-#       TRUE ~ "Strong overdispersion. Consider Negative Binomial or Quasi-Poisson."
-#     )
-#   )
-# }
-
-#table for all condition checks
+#table for all condition checks in the conditions tab
 make_condition_table <- function(data, response, model, model_type, removed.n = 0) {
   y <- data[[response]]
 
   mean_y <- mean(y, na.rm = TRUE)
   var_y <- var(y, na.rm = TRUE)
   disp <- dispersion_ratio(model)
+
+  yn <- function(x) ifelse(isTRUE(x), "Yes", "No")
 
   tibble::tibble(
     condition = c(
@@ -43,9 +30,9 @@ make_condition_table <- function(data, response, model, model_type, removed.n = 
     ),
     result = c(
       removed.n,
-      is.numeric(y),
-      all(y >= 0, na.rm = TRUE),
-      all(y %% 1 == 0, na.rm = TRUE),
+      yn(is.numeric(y)),
+      yn(all(y >= 0, na.rm = TRUE)),
+      yn(all(y %% 1 == 0, na.rm = TRUE)),
       round(mean_y, 3),
       round(var_y, 3),
       round(disp, 3)
@@ -67,7 +54,7 @@ make_condition_table <- function(data, response, model, model_type, removed.n = 
 }
 
 
-#function to text zero-inlfation using DHARMa package
+#function to test zero-inlfation using DHARMa package, outputting the p-value
 check_zero_inflation_dharma <- function(model) {
   sim_res <- DHARMa::simulateResiduals(model)
   test <- DHARMa::testZeroInflation(sim_res)
@@ -113,6 +100,7 @@ make_conditions_plot <- function(model) {
   p1+p2
 }
 
+#plots fitted vs pearson residual squared
 make_pearson_squared_plot <- function(model) {
   lambdas <- fitted(model, type="response")
 

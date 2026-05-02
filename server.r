@@ -19,6 +19,8 @@ library(MASS)
 library(pscl)
 library(performance)
 library(car)
+library(emmeans)
+
 
 source("helpers.R")
 source("models.R")
@@ -37,7 +39,8 @@ server <- (function(input, output, session){
     model_type = NULL,
     response = NULL,
     comparison_table = NULL,
-    removed.n = 0
+    removed.n = 0,
+    sample = FALSE
   )
   
   ##############################################
@@ -144,7 +147,7 @@ server <- (function(input, output, session){
 
     } else if (choice == "Kitsberg 2025") {
         dat = read.csv("www/kitsberg25_nucleus.csv") %>%
-          rename(viruses = `viruses within nucleus`)
+          rename("viruses" = "viruses.within.nucleus")
 
     } else if (choice == "Ache Monkey (McMillan)") {
         dat = read.csv("www/ache_monkey.csv")
@@ -156,6 +159,8 @@ server <- (function(input, output, session){
     } else if (choice == "Niyogi 2025") {
         dat = read.csv("www/niyogi25.csv")
 
+    } else if (choice == "Bad Data: Missing Values") {
+        dat <- read.csv("www/bad_missing.csv")
     } else {
         dat = NULL
     }
@@ -167,6 +172,94 @@ server <- (function(input, output, session){
   # When sample data is loaded
   #############################################################################################
   observeEvent(input$sample, {
+    if (input$sample %% 2 == 1) { #tracks how many times it has been pressed (help from AI)
+
+    shinyjs::hide("file_upload")
+    shinyjs::show("choose_sample")
+    updateActionButton(session, "sample", label = "<- Back")
+
+  } else {
+
+    vals$dataset <- NULL
+    vals$model <- NULL
+    vals$model_data <- NULL
+    vals$response <- NULL
+    vals$model_type <- NULL
+    vals$comparison_table <- NULL
+    vals$removed.n <- 0
+
+    shinyjs::show("file_upload")
+    shinyjs::hide("choose_sample")
+
+    updateSelectizeInput(session, "select_factors",
+                         choices = character(0),
+                         selected = character(0))
+
+    updateSelectInput(session, "offset_var",
+                      choices = c("None"),
+                      selected = "None")
+
+    updateTextInput(session, "equation", value = "")
+
+    updateActionButton(session, "sample", label = "Use Sample Data")
+  }
+
+  #   vals$sample <- !vals$sample
+
+  # if (vals$sample) {
+
+  #   shinyjs::hide("file_upload")
+  #   shinyjs::show("choose_sample")
+
+  #   updateActionButton(
+  #     session,
+  #     "sample",
+  #     label = "<- Back"
+  #   )
+
+  # } else {
+
+  #   vals$dataset <- NULL
+  #   vals$model <- NULL
+  #   vals$model_data <- NULL
+  #   vals$response <- NULL
+  #   vals$model_type <- NULL
+  #   vals$removed.n <- 0
+
+  #   shinyjs::show("file_upload")
+  #   shinyjs::hide("choose_sample")
+
+  #   updateSelectInput(
+  #     session,
+  #     "sample_data_choice",
+  #     selected = "Select a sample dataset"
+  #   )
+
+  #   updateSelectizeInput(
+  #     session,
+  #     "select_factors",
+  #     choices = character(0),
+  #     selected = character(0)
+  #   )
+
+  #   updateSelectInput(
+  #     session,
+  #     "offset_var",
+  #     choices = c("None"),
+  #     selected = "None"
+  #   )
+
+  #   updateTextInput(session, "equation", value = "")
+
+  #   updateActionButton(
+  #     session,
+  #     "sample",
+  #     label = "Use Sample Data"
+  #   )
+  # }
+  })
+
+
     # globalVars$changed.input <- TRUE
     # updateTabsetPanel(session, "workPanel", selected = "data")
     # globalVars$model <- NULL
@@ -174,18 +267,20 @@ server <- (function(input, output, session){
     # hideInteractionInput()
     # uncheckAllAssumptions()
     # emptyEquation()
-    if (is.null(vals$sample)) {
-      vals$sample <- FALSE
-    } 
-
-    vals$sample <- !vals$sample
 
 
-    if(vals$sample){
+    # if (is.null(vals$sample)) {
+    #   vals$sample <- FALSE
+    # } 
+
+    # vals$sample <- !vals$sample
+
+
+    # if(vals$sample){
       #globalVars$sample <- TRUE
       #globalVars$dataset <- NULL
-      shinyjs::hide("file_upload")
-      shinyjs::show("choose_sample")
+      #shinyjs::hide("file_upload")
+      #shinyjs::show("choose_sample")
       #shinyjs::show("select_factors")
       
       # if(input$sample_data_choice=="Palmer Penguins"){
@@ -205,20 +300,20 @@ server <- (function(input, output, session){
       # globalVars$dataset.original <- dat %>% mutate_if(is.character,as.factor)%>%
       #   mutate_if(is.integer,as.numeric)
       
-      updateActionButton(session, "sample", label = "<- Back")
+      #updateActionButton(session, "sample", label = "<- Back")
       # updateFactorsSelectize()
       
-    } else {
-      #globalVars$sample <- FALSE
-      vals$dataset <- NULL
-      vals$model <- NULL
-      vals$model_data <- NULL
-      vals$response <- NULL
-      vals$model_type <- NULL
-      vals$removed.n <- 0
+    # } else {
+    #   #globalVars$sample <- FALSE
+    #   vals$dataset <- NULL
+    #   vals$model <- NULL
+    #   vals$model_data <- NULL
+    #   vals$response <- NULL
+    #   vals$model_type <- NULL
+    #   vals$removed.n <- 0
 
-      shinyjs::show("file_upload")
-      shinyjs::hide("choose_sample")
+    #   shinyjs::show("file_upload")
+    #   shinyjs::hide("choose_sample")
       
       # if(!is.null(input$file_upload)){
       #   inFile <<- upload_data()
@@ -235,34 +330,37 @@ server <- (function(input, output, session){
       #                        choices = c(""),
       #                        selected = NULL)
       # }
-      updateSelectInput(
-      session,
-      "sample_data_choice",
-      selected = "Select a sample dataset"
-     )
-      updateSelectizeInput(
-      session,
-      "select_factors",
-      choices = NULL,
-      selected = NULL
-    )
-      updateSelectInput(
-        session,
-        "offset_var",
-        choices = "None",
-        selected = "None"
-      )
-      
-      updateTextInput(session, "equation", value = "")
 
-      updateActionButton(session, "sample", label = "Use Sample Data")
-    }
-  })
+
+  #     updateSelectInput(
+  #     session,
+  #     "sample_data_choice",
+  #     selected = "Select a sample dataset"
+  #    )
+  #     updateSelectizeInput(
+  #     session,
+  #     "select_factors",
+  #     choices = NULL,
+  #     selected = NULL
+  #   )
+  #     updateSelectInput(
+  #       session,
+  #       "offset_var",
+  #       choices = "None",
+  #       selected = "None"
+  #     )
+      
+  #     updateTextInput(session, "equation", value = "")
+
+  #     updateActionButton(session, "sample", label = "Use Sample Data")
+  #   }
+  # })
   
   #############################################################################################
   # When a new sample selected
   #############################################################################################
   observeEvent(input$sample_data_choice,{
+    req(input$sample_data_choice)
     if (input$sample_data_choice == "Select a sample dataset") {
       vals$dataset <- NULL
       vals$model <- NULL
@@ -314,6 +412,7 @@ server <- (function(input, output, session){
     selected = "None"
   )
    shinyjs::show("select_factors")
+  })
     # if(globalVars$sample){
     #   if(input$sample_data_choice=="Palmer Penguins"){
     #     library(palmerpenguins)
@@ -344,7 +443,6 @@ server <- (function(input, output, session){
     #   uncheckAllAssumptions()
     #   hideAllTabs()
     # }
-  })
   
   ########################################
   # Check Equation Input
@@ -440,6 +538,15 @@ server <- (function(input, output, session){
       formula_text = input$equation,
       data = cleaned$data,
       offset_var = input$offset_var
+    )
+
+    predictors <- all.vars(as.formula(input$equation))[-1]
+
+    updateSelectInput(
+      session,
+      "emmeans_predictor",
+      choices = c("None", predictors),
+      selected = ifelse(length(predictors) > 0, predictors[1], "None")
     )
     updateTabsetPanel(session, "workPanel", selected = "Data Summary")
     
@@ -543,14 +650,14 @@ server <- (function(input, output, session){
     ))
   })
   
-  output$irr_table <- DT::renderDataTable({
-    req(vals$model, vals$model_type)
+  # output$irr_table <- DT::renderDataTable({
+  #   req(vals$model, vals$model_type)
 
-    DT::datatable(
-      tidy_count_model(vals$model, vals$model_type, input$alpha),
-      options = list(pageLength = 10, scrollX = TRUE)
-    )
-  })
+  #   DT::datatable(
+  #     tidy_count_model(vals$model, vals$model_type, input$alpha),
+  #     options = list(pageLength = 10, scrollX = TRUE)
+  #   )
+  # })
 
   output$condition_plots <- renderPlot({
     req(vals$model)
@@ -602,24 +709,162 @@ server <- (function(input, output, session){
     ))
   })
 
-  output$emmeans_table <- DT::renderDataTable({
-  req(vals$model)
+  output$model_interpretation <- renderUI({
+    req(vals$model, vals$model_type)
 
-  # choose first predictor for now (simple version)
-  predictors <- all.vars(as.formula(input$equation))[-1]
+    tab <- tidy_count_model(vals$model, vals$model_type, input$alpha)
 
-  if (length(predictors) == 0) return(NULL)
+    # remove intercept
+    tab <- tab %>% dplyr::filter(term != "(Intercept)")
 
-  pred <- predictors[1]
+    if (nrow(tab) == 0) {
+      return(HTML("<p>No predictors in the model.</p>"))
+    }
+    if(vals$model_type %in% c("Poisson", "Quasi-Poisson", "Negative Binomial")){
+      text <- paste(
+      apply(tab, 1, function(row) {
 
-  emm <- tryCatch(
-    emmeans::emmeans(vals$model, specs = pred, type = "response"),
-    error = function(e) NULL
+        pct <- as.numeric(row[["percent_change"]])
+
+        direction <- ifelse(pct >= 0, "increase", "decrease")
+
+        paste0(
+          "<p>Holding other variables constant, a one-unit increase in <b>",
+          row[["term"]],
+          "</b> is associated with a <b>",
+          abs(pct),
+          "% ",
+          direction,
+          "</b> in the expected count.</p>"
+        )
+      }),
+      collapse = ""
+    )
+    }
+    #interpretation for zero-inflated model
+    else {
+      count_tab <- tab %>% dplyr::filter(component == "count")
+      zero_tab  <- tab %>% dplyr::filter(component == "zero")
+
+      count_text <- paste(
+        apply(count_tab, 1, function(row) {
+          pct <- as.numeric(row[["percent_change"]])
+          direction <- ifelse(pct >= 0, "increase", "decrease")
+
+          paste0(
+            "<p><b>Count model:</b> Holding other variables constant, a one-unit increase in <b>",
+            row[["term"]],
+            "</b> is associated with a <b>",
+            abs(pct),
+            "% ",
+            direction,
+            "</b> in the expected count among observations in the count-generating process.</p>"
+          )
+        }),
+        collapse = ""
+      )
+      #interpretation for zero part
+      zero_text <- paste(
+        apply(zero_tab, 1, function(row) {
+          pct <- as.numeric(row[["percent_change"]])
+          direction <- ifelse(pct >= 0, "increase", "decrease")
+
+          paste0(
+            "<p><b>Zero-inflation model:</b> Holding other variables constant, a one-unit increase in <b>",
+            row[["term"]],
+            "</b> is associated with a <b>",
+            abs(pct),
+            "% ",
+            direction,
+            "</b> in the odds of being in the structural-zero group.</p>"
+          )
+        }),
+        collapse = ""
+      )
+
+      text <- paste0(
+        "<p>Zero-inflated models have two parts. The <b>count model</b> explains expected counts, while the <b>zero-inflation model</b> explains the probability of belonging to the structural-zero group.</p>",
+        count_text,
+        zero_text
+      )
+      }
+      
+
+    HTML(text)
+  })
+  
+  output$emmeans_plot <- renderPlot({
+  req(vals$model, vals$model_data, vals$response)
+  req(input$emmeans_predictor)
+  req(input$emmeans_predictor != "None")
+  
+  if (vals$model_type %in% c(
+    "Zero-Inflated Poisson",
+    "Zero-Inflated Negative Binomial",
+    "Generalized Poisson"
+  )) {
+    plot.new()
+    text(
+      0.5, 0.5,
+      "Estimated mean plots are currently available for Poisson, Quasi-Poisson, and Negative Binomial models."
+    )
+    return()
+  }
+  #tryCatch syntax help from AI (makes sure emmeans plot can run)
+  tryCatch(
+    {
+      make_emmeans_plot(
+        model = vals$model,
+        data = vals$model_data,
+        formula_text = input$equation,
+        predictor = input$emmeans_predictor
+      )
+    },
+    error = function(e) {
+      plot.new()
+      text(
+        0.5, 0.5,
+        paste("Estimated mean plot could not be created:", e$message)
+      )
+    }
   )
+  })
 
-  req(emm)
-
-  as.data.frame(emm)
-})
+  output$emmeans_plot <- renderPlot({
+    req(vals$model, vals$model_data, vals$response)
+    req(input$emmeans_predictor)
+    req(input$emmeans_predictor != "None")
+    
+    if (vals$model_type %in% c(
+      "Zero-Inflated Poisson",
+      "Zero-Inflated Negative Binomial",
+      "Generalized Poisson"
+    )) {
+      plot.new()
+      text(
+        0.5, 0.5,
+        "Estimated mean plots are currently available for Poisson, Quasi-Poisson, and Negative Binomial models."
+      )
+      return()
+    }
+    
+    tryCatch(
+      {
+        make_emmeans_plot(
+          model = vals$model,
+          data = vals$model_data,
+          formula_text = input$equation,
+          predictor = input$emmeans_predictor
+        )
+      },
+      error = function(e) {
+        plot.new()
+        text(
+          0.5, 0.5,
+          paste("Estimated mean plot could not be created:", e$message)
+        )
+      }
+    )
+  })
   
 })

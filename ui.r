@@ -94,7 +94,8 @@ ui <- tagList(
                                         "Kitsberg 2025",
                                         "Ache Monkey (McMillan)",
                                         "Ache Monkey Trips",
-                                        "Niyogi 2025"),
+                                        "Niyogi 2025",
+                                        "Bad Data: Missing Values"),
                             selected = "Select a sample dataset"
                 )
               )
@@ -232,21 +233,34 @@ ui <- tagList(
             ),
 
             tabPanel(
-              "Model Output and Interpretation",
-              br(),
-              h3("Model Summary"),
-              shinycssloaders::withSpinner(
-                DT::dataTableOutput("model_summary")
-              ),
-              br(),
-              h3("Incidence Rate Ratios"),
-              shinycssloaders::withSpinner(
-                DT::dataTableOutput("irr_table")
-              ),
-              br(),
-              h3("Plain-English Interpretation"),
-              htmlOutput("model_interpretation")
-            ),
+                "Model Output and Interpretation",
+                br(),
+
+                h3("Model Summary"),
+                helpText("This table shows coefficient estimates, standard errors, test statistics, p-values, and percent change in expected count."),
+                shinycssloaders::withSpinner(
+                  DT::dataTableOutput("model_summary")
+                ),
+
+                br(),
+                h3("Coefficient Interpretation"),
+                helpText("Each sentence below gives the actual percent change in the expected count for each predictor."),
+                htmlOutput("model_interpretation"),
+
+                br(),
+                h3("Estimated Marginal Mean Plots"),
+                helpText("This plot shows estimated expected counts across a selected predictor, holding other predictors at their mean."),
+
+                selectInput(
+                  "emmeans_predictor",
+                  "Choose predictor for estimated means plot:",
+                  choices = c("None"),
+                  selected = "None"
+                ),
+                shinycssloaders::withSpinner(
+                  plotOutput("emmeans_plot")
+                )
+            )
 
             
           )

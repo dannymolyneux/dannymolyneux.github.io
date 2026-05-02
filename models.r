@@ -2,8 +2,9 @@ library(dplyr)
 library(tibble)
 library(MASS)
 library(pscl)
+library(emmeans)
 
-#fits the model
+#fits the model based on user selection
 fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
   form = add_offset_to_formula(formula_text, offset_var)
   if (model_type == "Poisson") {
@@ -24,7 +25,7 @@ fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
 }
 
 
-#function that displays the summary of the model (including confidence interval)
+#function that displays the summary of the model (including percent change)
 tidy_count_model <- function(model, model_type, alpha = 0.05) {
   #anything but zero-inflated (all have same summary format)
   if (model_type %in% c("Poisson", "Quasi-Poisson", "Negative Binomial")) {
@@ -37,9 +38,7 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
       std.error = coefs[, "Std. Error"],
       statistic = coefs[, 3],
       p.value = coefs[, 4],
-      incidence_rate_ratio = exp(coefs[, "Estimate"]),
-      conf.low.irr = exp(ci[, 1]),
-      conf.high.irr = exp(ci[, 2]),
+      percent_change = round((exp(coefs[, "Estimate"]) - 1)*100, 2),
       row.names = NULL
     )
   }
@@ -63,12 +62,9 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
     out$percent_change <- round((exp(out$estimate) - 1) * 100, 2)
 
     return(out)
-    #combine
-    #bind_rows(count_part, zero_part) %>%
-      #mutate(incidence_rate_ratio = exp(estimate)) %>%
-      #select(component, term, estimate, std.error, statistic, p.value, incidence_rate_ratio)
   }
 }
+
 #function that displays how good the model fit is (deviance and AIC)
 count_gof_table <- function(model, model_type) {
   #no AIC, BIC, or likelihood
@@ -108,7 +104,7 @@ fit_candidate_models <- function(formula_text, data, offset_var = NULL) {
   form <- add_offset_to_formula(formula_text, offset_var)
 
   models <- list()
-
+   #tryCatch() syntax help from AI
   models$Poisson <- tryCatch(
     glm(form, data = data, family = poisson(link = "log")),
     error = function(e) NULL
@@ -190,7 +186,91 @@ add_offset_to_formula <- function(formula_text, offset_var = NULL) {
     return(as.formula(formula_text))
   }
 
+
   as.formula(
     paste0(formula_text, " + offset(log(", offset_var, "))")
   )
+}
+
+#Estimated marginal means plot for selected predictor
+make_emmeans_plot <- function(model, data, formula_text, predictor) {
+  
+  response <- all.vars(as.formula(formula_text))[1]
+  predictors <- all.vars(as.formula(formula_text))[-1]
+  
+  if (!(predictor %in% predictors)) {
+    stop("Selected predictor is not in the model.")
+  }
+  
+  pred_values <- data[[predictor]]
+  
+  if (!is.numeric(pred_values)) {
+    
+    em <- emmeans::emmeans(
+      model,
+      specs = as.formula(paste("~", predictor)),
+      type = "response"
+    )
+    
+    em_df <- as.data.frame(em)
+    
+    ggplot2::ggplot(em_df, ggplot2::aes(x = .data[[predictor]], y = response)) +
+      ggplot2::geom_point(size = 3) +
+      ggplot2::geom_errorbar(
+        ggplot2::aes(ymin = asymp.LCL, ymax = asymp.UCL),
+        width = 0.15
+      ) +
+      ggplot2::labs(
+        x = predictor,
+        y = paste("Estimated Marginal Mean"),
+        title = paste("Estimated Marginal Means Across", predictor)
+      ) +
+      ggplot2::theme_bw()
+    
+  } else {
+    
+    at_list <- list()
+    
+    at_list[[predictor]] <- seq(
+      min(pred_values, na.rm = TRUE),
+      max(pred_values, na.rm = TRUE),
+      length.out = 100
+    )
+    
+    other_predictors <- setdiff(predictors, predictor)
+    
+    for (v in other_predictors) {
+      if (is.numeric(data[[v]])) {
+        at_list[[v]] <- mean(data[[v]], na.rm = TRUE)
+      }
+    }
+    
+    em <- emmeans::emmeans(
+      model,
+      specs = as.formula(paste("~", predictor)),
+      at = at_list,
+      type = "response"
+    )
+    
+    em_df <- as.data.frame(em)
+    
+    lower_col <- intersect(c("asymp.LCL", "lower.CL"), names(em_df))[1]
+    upper_col <- intersect(c("asymp.UCL", "upper.CL"), names(em_df))[1]
+    
+    ggplot2::ggplot(em_df, ggplot2::aes(x = .data[[predictor]], y = response)) +
+      ggplot2::geom_line(linewidth = 1) +
+      ggplot2::geom_ribbon(
+        ggplot2::aes(
+          ymin = .data[[lower_col]],
+          ymax = .data[[upper_col]]
+        ),
+        alpha = 0.2
+      ) +
+      ggplot2::labs(
+        x = predictor,
+        y = paste("Estimated expected", response),
+        title = paste("Estimated Mean", response, "Across", predictor)
+      ) +
+      ggplot2::theme_bw()
+  }
 }
