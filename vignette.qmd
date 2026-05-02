@@ -23,7 +23,7 @@ Predictor:
 
 ## Step 2: Look at summary of data
 
-After pressing **Fit Model**, the "Data Summary" tab should show:
+After choosing "Poisson" as our model type and pressing **Fit Model**, the "Data Summary" tab should show:
 - Mean: 2.787  
 - Variance: 40.171  
 
@@ -39,12 +39,16 @@ Try Negative Binomial so that we can use AIC and log-likelihood, while hopefully
 
 ## Step 5: New diagnostics
 
-"Diagnostics" tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the "Model Comparison" tab, by comparing the AIC's.
+"Diagnostics" tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the "Model Comparison" tab, by comparing the AIC's. A Generalized Poisson model also looks appropriate, so that can be used as well.
 
 ## Step 6: Interpretation
 
-From Model Output:
+From Model Output for Negative Binomial:
 
-A one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.
+Holding other variables constant, a one-unit increase in Age is associated with a 5.73% increase in the expected count of kills.
 
-This interpretation is based on incidence rate ratios.
+From Model Output for Generalized Poisson:
+
+Holding other variables constant, a one-unit increase in Age is associated with a 3.27% increase in the expected count of kills.
+
+This interpretation is based on the exponentiated predictor coefficient.

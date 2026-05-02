@@ -264,21 +264,26 @@ server <- (function(input, output, session){
 
     factor_vars <- names(cleaned$data)[sapply(cleaned$data, is.factor)]
 
+    print(factor_vars)
     #syntax help from AI
-    bad_factors <- factor_vars[
+    if(length(factor_vars) > 0){
+      bad_factors <- factor_vars[
       sapply(cleaned$data[factor_vars], function(x) length(unique(na.omit(x))) < 2)
-    ]
-
-    if (length(bad_factors) > 0) {
-      showNotification(
-        paste(
+      ]
+      if (length(bad_factors) > 0) {
+        showNotification(
+        `paste(
           "Model cannot be fit because these categorical variables have fewer than 2 observed levels after cleaning:",
           paste(bad_factors, collapse = ", ")
         ),
-        type = "error"
-      )
-      return(NULL)
+        type = "error"`
+        )
+        return(NULL)
+      }
     }
+    
+
+    
     vals$model <- fit_count_model(input$equation, cleaned$data, input$model_type, offset_var = NULL)
 
     vals$model_type <- input$model_type
