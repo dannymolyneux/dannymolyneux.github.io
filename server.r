@@ -20,6 +20,7 @@ library(pscl)
 library(performance)
 library(car)
 library(emmeans)
+library(VGAM)
 
 
 source("helpers.R")
@@ -343,7 +344,10 @@ server <- (function(input, output, session){
     } else if (vals$model_type %in% c("Zero-Inflated Poisson", "Zero-Inflated Negative Binomial")) {
         "Zero-inflated models address excess zeros by separately modeling zeros from the count process."
 
-    } else {
+    } else if(vals$model_type == "Generalized Poisson") {
+        "Dispersion is modeled directly; equidispersion is not required."
+
+   } else {
         "Dispersion interpretation depends on the selected model."
     }
 
@@ -384,12 +388,12 @@ server <- (function(input, output, session){
 
   output$condition_plots <- renderPlot({
     req(vals$model)
-    make_conditions_plot(vals$model)
+    make_conditions_plot(vals$model, vals$model_type)
   })
 
   output$pearson_squared_plot <- renderPlot({
     req(vals$model)
-    make_pearson_squared_plot(vals$model)
+    make_pearson_squared_plot(vals$model, vals$model_type)
   })
 
   output$gof_table <- DT::renderDataTable({
@@ -443,7 +447,7 @@ server <- (function(input, output, session){
     if (nrow(tab) == 0) {
       return(HTML("<p>No predictors in the model.</p>"))
     }
-    if(vals$model_type %in% c("Poisson", "Quasi-Poisson", "Negative Binomial")){
+    if(vals$model_type %in% c("Poisson", "Quasi-Poisson", "Negative Binomial", "Generalized Poisson")){
       text <- paste(
       apply(tab, 1, function(row) {
 

@@ -140,7 +140,8 @@ ui <- tagList(
                       "Poisson",
                       "Quasi-Poisson",
                       "Negative Binomial",
-                      "Zero-Inflated Poisson"
+                      "Zero-Inflated Poisson",
+                      "Generalized Poisson"
                       ),
             selected = "Poisson"
           ),

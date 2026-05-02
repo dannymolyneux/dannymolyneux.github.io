@@ -72,7 +72,12 @@ check_zero_inflation_dharma <- function(model) {
 }
 
 #Makes RQR plot and qq plot with dispersion ratio
-make_conditions_plot <- function(model) {
+make_conditions_plot <- function(model, model_type) {
+  if (model_type == "Generalized Poisson") {
+    plot.new()
+    text(0.5, 0.5, "RQR and QQ plots for generalized Poisson are not implemented.")
+    return()
+  }
   counts <- model$y
   lambdas <- fitted(model)
   rqr <- rep(NA, length(lambdas))
@@ -101,7 +106,12 @@ make_conditions_plot <- function(model) {
 }
 
 #plots fitted vs pearson residual squared
-make_pearson_squared_plot <- function(model) {
+make_pearson_squared_plot <- function(model, model_type) {
+  if (model_type == "Generalized Poisson") {
+    plot.new()
+    text(0.5, 0.5, "Squared Pearson Residuals for generalized Poisson are not implemented.")
+    return()
+  }
   lambdas <- fitted(model, type="response")
 
   ggdat <- tibble(r = resid(model, type="pearson")^2,

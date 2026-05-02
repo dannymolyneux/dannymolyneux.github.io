@@ -3,6 +3,7 @@ library(tibble)
 library(MASS)
 library(pscl)
 library(emmeans)
+library( VGAM)
 
 #fits the model based on user selection
 fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
@@ -19,6 +20,9 @@ fit_count_model <- function(formula_text, data, model_type, offset_var = NULL) {
   } else if (model_type == "Zero-Inflated Poisson") {
     pscl::zeroinfl(form, data = data, dist = "poisson")
 
+  } else if (model_type == "Generalized Poisson") {
+    VGAM::vglm(form, data = data, family = VGAM::genpoisson1())
+
   } else {
     stop("Unsupported model type.")
   }
@@ -32,7 +36,7 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
     coefs <- summary(model)$coefficients
     ci <- confint(model, level = 1 - alpha)
 
-    data.frame(
+    out <- data.frame(
       term = rownames(coefs),
       estimate = coefs[, "Estimate"],
       std.error = coefs[, "Std. Error"],
@@ -43,6 +47,25 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
       conf.high.pct = round((exp(ci[, 2]) - 1) * 100, 2),
       row.names = NULL
     )
+
+    return(out)
+  }
+  else if(model_type == "Generalized Poisson") {
+    coefs <- coef(summary(model))
+
+    out <- data.frame(
+      term = rownames(coefs),
+      estimate = coefs[, 1],
+      std.error = coefs[, 2],
+      statistic = coefs[, 3],
+      p.value = coefs[, 4],
+      percent_change = round((exp(coefs[, 1]) - 1)*100, 2),
+      conf.low.pct = round((exp(ci[, 1]) - 1) * 100, 2),
+      conf.high.pct = round((exp(ci[, 2]) - 1) * 100, 2),
+      row.names = NULL
+    )
+
+    return(out)
   }
   #zero-inflated
   else {
@@ -129,6 +152,11 @@ fit_candidate_models <- function(formula_text, data, offset_var = NULL) {
 
   models$`Zero-Inflated Negative Binomial` <- tryCatch(
     pscl::zeroinfl(form, data = data, dist = "negbin"),
+    error = function(e) NULL
+  )
+
+  models$`Generalized Poisson` <- tryCatch(
+    VGAM::vglm(form, data = data, family = VGAM::genpoisson1()),
     error = function(e) NULL
   )
 
