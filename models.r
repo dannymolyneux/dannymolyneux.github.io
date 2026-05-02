@@ -58,9 +58,15 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
     zero_part$term <- rownames(zero_part)
 
     #combine
-    bind_rows(count_part, zero_part) %>%
-      mutate(incidence_rate_ratio = exp(estimate)) %>%
-      select(component, term, estimate, std.error, statistic, p.value, incidence_rate_ratio)
+    out <- dplyr::bind_rows(count_part, zero_part)
+
+    out$percent_change <- round((exp(out$estimate) - 1) * 100, 2)
+
+    return(out)
+    #combine
+    #bind_rows(count_part, zero_part) %>%
+      #mutate(incidence_rate_ratio = exp(estimate)) %>%
+      #select(component, term, estimate, std.error, statistic, p.value, incidence_rate_ratio)
   }
 }
 #function that displays how good the model fit is (deviance and AIC)

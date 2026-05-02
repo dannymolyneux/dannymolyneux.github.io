@@ -472,11 +472,11 @@ server <- (function(input, output, session){
   })
 
   output$model_summary <- DT::renderDataTable({
-    req(vals$model)
+    req(vals$model, vals$model_type)
 
     DT::datatable(
-      broom::tidy(vals$model),
-      options = list(pageLength = 10, scrollX = TRUE)
+      tidy_count_model(vals$model, vals$model_type, input$alpha),
+    options = list(scrollX = TRUE)
     )
   })
   
@@ -545,7 +545,7 @@ server <- (function(input, output, session){
       dplyr::filter(!is.na(AIC))
 
     if (nrow(cleaned.table) == 0) {
-      return(HTML("<p>No likelihood-based models were available for AIC comparison.</p>"))
+      return(HTML("<p>No models were available for AIC comparison.</p>"))
     }
 
     best <- cleaned.table$model[which.min(cleaned.table$AIC)]
@@ -553,7 +553,7 @@ server <- (function(input, output, session){
     HTML(paste0(
       "<p>Among the models other than Quasi-Poisson, the lowest AIC is for <b>",
       best,
-      "</b>. A lower AIC suggests a better model fit, but diagnostics need to be considered as well.</p>",
+      "</b>. A lower AIC suggests a better model fit, but diagnostics and dispersion need to be considered as well.</p>",
       "<p>Note: Quasi-Poisson was not included in the AIC comparison because it does not have a full likelihood.</p>"
     ))
   })

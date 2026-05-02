@@ -116,11 +116,11 @@ ui <- tagList(
           ),
 
           selectInput(
-  "offset_var",
-  "Optional offset variable:",
-  choices = c("None"),
-  selected = "None"
-),
+          "offset_var",
+          "Optional offset variable:",
+          choices = c("None"),
+          selected = "None"
+          ),
 
 
           numericInput(
@@ -200,6 +200,9 @@ ui <- tagList(
             tabPanel(
               "Diagnostics",
               br(),
+              helpText("RQR Plot: Residuals should be randomly scattered with no clear pattern."),
+              helpText("QQ Plot: Points should lie close to the diagonal line."),
+              helpText("Pearson Residual Plot: No increasing trend should be visible. A strong upward pattern suggests overdispersion."),
               h3("Randomized Quantile Residuals and QQ Plot"),
               shinycssloaders::withSpinner(
                 plotOutput("condition_plots")
