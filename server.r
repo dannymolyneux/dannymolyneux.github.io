@@ -262,6 +262,23 @@ server <- (function(input, output, session){
     vals$response <- response
     vals$removed.n <- cleaned$removed.n
 
+    factor_vars <- names(cleaned$data)[sapply(cleaned$data, is.factor)]
+
+    #syntax help from AI
+    bad_factors <- factor_vars[
+      sapply(cleaned$data[factor_vars], function(x) length(unique(na.omit(x))) < 2)
+    ]
+
+    if (length(bad_factors) > 0) {
+      showNotification(
+        paste(
+          "Model cannot be fit because these categorical variables have fewer than 2 observed levels after cleaning:",
+          paste(bad_factors, collapse = ", ")
+        ),
+        type = "error"
+      )
+      return(NULL)
+    }
     vals$model <- fit_count_model(input$equation, cleaned$data, input$model_type, offset_var = NULL)
 
     vals$model_type <- input$model_type
@@ -533,7 +550,7 @@ server <- (function(input, output, session){
       plot.new()
       text(
         0.5, 0.5,
-        "Estimated mean plots are currently available for Poisson, Quasi-Poisson, and Negative Binomial models."
+        "Estimated mean plots are only available for Poisson, Quasi-Poisson, and Negative Binomial models."
       )
       return()
     }

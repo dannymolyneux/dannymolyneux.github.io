@@ -5,7 +5,7 @@ library(DHARMa)
 
 #calculates dispersion ratio
 dispersion_ratio <- function(model) {
-  sum(residuals(model, type = "pearson")^2) / model$df.residual
+  sum(residuals(model, type = "pearson")^2) / df.residual(model)
 }
 
 #table for all condition checks in the conditions tab

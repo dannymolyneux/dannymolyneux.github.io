@@ -52,6 +52,7 @@ tidy_count_model <- function(model, model_type, alpha = 0.05) {
   }
   else if(model_type == "Generalized Poisson") {
     coefs <- coef(summary(model))
+    ci <- confint(model, level = 1 - alpha)
 
     out <- data.frame(
       term = rownames(coefs),
@@ -150,10 +151,6 @@ fit_candidate_models <- function(formula_text, data, offset_var = NULL) {
     error = function(e) NULL
   )
 
-  models$`Zero-Inflated Negative Binomial` <- tryCatch(
-    pscl::zeroinfl(form, data = data, dist = "negbin"),
-    error = function(e) NULL
-  )
 
   models$`Generalized Poisson` <- tryCatch(
     VGAM::vglm(form, data = data, family = VGAM::genpoisson1()),
