@@ -1,11 +1,42 @@
 ---
 title: "About"
+format: html
 ---
 
 ## Project Overview
 
-This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard.
+This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include:
+- Poisson Regression
+- Quasi-Poisson Regression
+- Negative Binomial Regression
+- Zero-Inflated Poisson and Negative Binomial Models
 
-The toolkit allows users to upload data, specify regression models, and perform count regressions including model fitting/comparisons, condition checks, and interpretation.
+---
 
-## What is Count Regression?
+## Applications
+
+Count regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.
+
+The toolkit allows users to:
+- Upload data
+- Specify regression models
+- Model fitting and condition checks
+- Model comparisons
+- Interpretation of results
+
+---
+
+## How to Use the App
+
+1. Upload your own dataset or choose a sample dataset
+2. Specify a model formula (e.g., `Kills ~ Age + Days`)
+3. Select a model type
+4. Click **Fit Model**
+5. Click through tabs to evaluate and interpret your results
+
+---
+
+## Author
+
+Danny Molyneux  
+Data Analysis II Project

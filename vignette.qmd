@@ -1,28 +1,50 @@
 ---
 title: "Vignette: Using the Count Regression Toolkit"
+format: html
 ---
 
-## Example Workflow
+## Example Model
 
 This vignette demonstrates how to use the Shiny App to fit and evaluate count regression models.
 
 ## Step 1: Load Data
 
-Open the Shiny App and upload a CSV file with a count response variable.
+Use the sample dataset:
 
-## Step 2: Enter a Model Formula
+**Ache Monkey (McMillan)**
 
-Use a formula such as:
+Response variable:
+- `Kills` (number of successful hunts)
 
-```r
-count_response ~ predictor1 + predictor2
-```
+Predictor:
+- `Age`
 
-## Step 3: Fit a Regression
+---
 
-Click **Fit Model**.
+## Step 2: Look at summary of data
 
-## Step 4: Check Output
+After pressing **Fit Model**, the "Data Summary" tab should show:
+- Mean: 2.787  
+- Variance: 40.171  
 
+Clearly, the variance is much larger than the mean, which indicates overdispersion.
 
-## Step 5: Interpret Results
+## Step 3: Check conditions and diagnostics
+
+The "Model Conditions" and "Diagnostics" tabs show a dispersion ratio of 11.679, confirming the overdispersion, and indicating we should try an alternative model.
+
+## Step 4: Try alternative
+
+Try Negative Binomial so that we can use AIC and log-likelihood, while hopefully fixing the overdispersion issue. So fit the model again but as a Negative Binomial Regression.
+
+## Step 5: New diagnostics
+
+"Diagnostics" tab now shows an improved RQR plot and Pearson residual plot, indicating a better fit has been found. This can be confirmed with the "Model Comparison" tab, by comparing the AIC's.
+
+## Step 6: Interpretation
+
+From Model Output:
+
+A one-unit increase in Age is associated with a X% increase/decrease in expected number of kills.
+
+This interpretation is based on incidence rate ratios.
