@@ -18,14 +18,14 @@
     "href": "vignette.html#step-1-load-data",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 1: Load Data",
-    "text": "Step 1: Load Data\nUse the sample dataset:\nAche Monkey (McMillan)\nResponse variable: - Kills (number of successful hunts)\nPredictor: - Age"
+    "text": "Step 1: Load Data\nUse the sample dataset:\nAche Monkey (McMillan)\nResponse variable:\n\nKills (number of successful hunts)\n\nPredictor:\n\nAge"
   },
   {
     "objectID": "vignette.html#step-2-look-at-summary-of-data",
     "href": "vignette.html#step-2-look-at-summary-of-data",
     "title": "Vignette: Using the Count Regression Toolkit",
     "section": "Step 2: Look at summary of data",
-    "text": "Step 2: Look at summary of data\nAfter choosing “Poisson” as our model type and pressing Fit Model, the “Data Summary” tab should show: - Mean: 2.787 - Variance: 40.171\nClearly, the variance is much larger than the mean, which indicates overdispersion."
+    "text": "Step 2: Look at summary of data\nAfter choosing “Poisson” as our model type and pressing Fit Model, the “Data Summary” tab should show:\n\nMean: 2.787\nVariance: 40.171\n\nClearly, the variance is much larger than the mean, which indicates overdispersion."
   },
   {
     "objectID": "vignette.html#step-3-check-conditions-and-diagnostics",
@@ -60,21 +60,21 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Negative Binomial Regression - Quasi-Poisson Regression - Zero Inflated Model - Generalized Poisson Regression"
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include:\n\nPoisson Regression\nNegative Binomial Regression\nQuasi-Poisson Regression\nZero Inflated Model\nGeneralized Poisson Regression"
   },
   {
     "objectID": "about.html#project-overview",
     "href": "about.html#project-overview",
     "title": "About",
     "section": "",
-    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include: - Poisson Regression - Negative Binomial Regression - Quasi-Poisson Regression - Zero Inflated Model - Generalized Poisson Regression"
+    "text": "This project is a statistical software toolkit designed to automate count regression analysis using an interactive Shiny dashboard. The count regression models include:\n\nPoisson Regression\nNegative Binomial Regression\nQuasi-Poisson Regression\nZero Inflated Model\nGeneralized Poisson Regression"
   },
   {
     "objectID": "about.html#applications",
     "href": "about.html#applications",
     "title": "About",
     "section": "Applications",
-    "text": "Applications\nCount regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.\nThe toolkit allows users to: - Upload data - Specify regression models - Model fitting and condition checks - Model comparisons - Analyze and interpret model summary and ouput"
+    "text": "Applications\nCount regression can be used on data such as number of events (natural disasters, disease cases, etc), number of occurrences of something over time, or it can be used for frequency data.\nThe toolkit allows users to:\n\nUpload data\nSpecify regression models\nModel fitting and condition checks\nModel comparisons\nAnalyze and interpret model summary and ouput"
   },
   {
     "objectID": "about.html#how-to-use-the-app",

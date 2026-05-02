@@ -15,9 +15,11 @@ Use the sample dataset:
 **Ache Monkey (McMillan)**
 
 Response variable:
+
 - `Kills` (number of successful hunts)
 
 Predictor:
+
 - `Age`
 
 ---
@@ -25,6 +27,7 @@ Predictor:
 ## Step 2: Look at summary of data
 
 After choosing "Poisson" as our model type and pressing **Fit Model**, the "Data Summary" tab should show:
+
 - Mean: 2.787
 - Variance: 40.171  
 
